@@ -22,9 +22,9 @@ export const QuickRail = () => (
 		<a
 			href={`tel:${siteConfig.contact.tel}`}
 			aria-label={`전화 상담 ${siteConfig.contact.tel}`}
-			className="relative flex flex-col items-center gap-2 overflow-hidden bg-brand px-2 py-4 text-center text-white before:absolute before:inset-0 before:z-[1] before:bg-[linear-gradient(115deg,transparent_35%,rgba(255,255,255,0.5)_50%,transparent_65%)] before:content-[''] motion-safe:animate-[rail-blink_1.4s_ease-in-out_infinite] motion-safe:before:animate-[rail-shine_2.6s_ease-in-out_infinite]"
+			className="rail-phone flex flex-col items-center gap-2 bg-brand px-2 py-4 text-center text-white"
 		>
-			<span className="relative z-[2] flex size-9 items-center justify-center rounded-full bg-white/15 motion-safe:animate-[rail-ring_1.7s_ease-in-out_infinite]">
+			<span className="rail-ring relative z-[2] flex size-9 items-center justify-center rounded-full bg-white/15">
 				<Phone className="size-5" aria-hidden />
 			</span>
 			<span className="relative z-[2] flex flex-col leading-tight">

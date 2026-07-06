@@ -284,3 +284,35 @@
 		transform: rotate(6deg) scale(1.04);
 	}
 }
+
+/* 전화패널 — 명시 CSS(Tailwind arbitrary before: 대신)로 확실히 애니메이션 */
+.rail-phone {
+	position: relative;
+	overflow: hidden;
+	animation: rail-blink 1.4s ease-in-out infinite;
+}
+.rail-phone::before {
+	content: "";
+	position: absolute;
+	inset: 0;
+	z-index: 1;
+	pointer-events: none;
+	background: linear-gradient(
+		115deg,
+		transparent 35%,
+		rgba(255, 255, 255, 0.5) 50%,
+		transparent 65%
+	);
+	transform: translateX(-130%);
+	animation: rail-shine 2.6s ease-in-out infinite;
+}
+.rail-ring {
+	animation: rail-ring 1.7s ease-in-out infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+	.rail-phone,
+	.rail-phone::before,
+	.rail-ring {
+		animation: none;
+	}
+}

@@ -262,4 +262,21 @@ test.describe("전체화면 넘기기 스크롤 (FullPageScroll)", () => {
 		await expect(rail.locator('a[href="https://naver.me/xHghsf16"]')).toHaveCount(1);
 		await expect(rail.locator('a[href="tel:02-2135-4974"]')).toHaveCount(1);
 	});
+
+	test("전화상담 패널에 샤인/깜빡임 애니메이션이 적용된다 (고정 아님)", async ({ page }) => {
+		await page.emulateMedia({ reducedMotion: "no-preference" });
+		await page.setViewportSize({ width: 1440, height: 900 });
+		await page.goto("/");
+		await page.waitForLoadState("networkidle");
+		const anim = await page.evaluate(() => {
+			const el = document.querySelector('aside[aria-label="빠른 상담"] a[href^="tel:"]');
+			if (!el) return { panel: "none", shine: "none" };
+			return {
+				panel: getComputedStyle(el).animationName,
+				shine: getComputedStyle(el, "::before").animationName,
+			};
+		});
+		expect(anim.panel).toBe("rail-blink");
+		expect(anim.shine).toBe("rail-shine");
+	});
 });
