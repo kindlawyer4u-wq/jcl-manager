@@ -1,0 +1,246 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+@plugin "@tailwindcss/typography";
+
+/* ═════════════════════════════════════════════════════════════════════════════
+   제이씨엘파트너스(JCL PARTNERS) 디자인 시스템
+   출처: design/home.html (Claude Design export)에서 추출한 메인 컬러 #1E6BF1 기반
+   - 단일 라이트 테마 + 다크 그라운드 섹션 (다크 모드 토글 아님)
+   - 색상: 5개 스펙트럼(brand/mint/slate/amber/danger) 각 50~950
+   - 타이포: fluid 스케일(display~overline) + 표준 weight 유틸(font-thin~font-black)
+   유틸 예시:  bg-brand-600  text-slate-700  border-brand-200  text-h2  font-extrabold
+   ═════════════════════════════════════════════════════════════════════════════ */
+
+@theme {
+	/* ─────────────────────────── Fonts ─────────────────────────── */
+	--font-sans:
+		var(--font-pretendard), "Pretendard Variable", Pretendard, -apple-system, BlinkMacSystemFont,
+		system-ui, sans-serif;
+	--font-heading: var(--font-pretendard), "Pretendard Variable", Pretendard, sans-serif;
+	--font-serif: Georgia, "Times New Roman", serif;
+	--font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+
+	/* ═══════════════════ Color spectrum ═══════════════════ */
+
+	/* Brand — 메인 블루 (#1E6BF1 = brand-600) */
+	--color-brand-50: #f4f8fe;
+	--color-brand-100: #dbe7fd;
+	--color-brand-200: #b7d0fb;
+	--color-brand-300: #8ab2f8;
+	--color-brand-400: #5d94f5;
+	--color-brand-500: #397df3;
+	--color-brand-600: #1e6bf1;
+	--color-brand-700: #1851b5;
+	--color-brand-800: #133f8c;
+	--color-brand-900: #0f2d62;
+	--color-brand-950: #0a1b39;
+
+	/* Mint — 보조 액센트 (#2FD9A5) */
+	--color-mint-50: #f5fdfb;
+	--color-mint-100: #def9f1;
+	--color-mint-200: #bcf3e2;
+	--color-mint-300: #93ebd0;
+	--color-mint-400: #69e4be;
+	--color-mint-500: #2fd9a5;
+	--color-mint-600: #26c294;
+	--color-mint-700: #24aa81;
+	--color-mint-800: #1c8968;
+	--color-mint-900: #14684f;
+	--color-mint-950: #0d4737;
+
+	/* Slate — 뉴트럴/잉크 (디자인 그레이 스케일) */
+	--color-slate-50: #f5f7fa;
+	--color-slate-100: #eef1f6;
+	--color-slate-200: #d7dce6;
+	--color-slate-300: #c3cad6;
+	--color-slate-400: #9aa4b4;
+	--color-slate-500: #7a8296;
+	--color-slate-600: #55607a;
+	--color-slate-700: #3a4457;
+	--color-slate-800: #1b2740;
+	--color-slate-900: #0b1020;
+	--color-slate-950: #05070b;
+
+	/* Amber — 경고/강조 */
+	--color-amber-50: #fffbf4;
+	--color-amber-100: #fdf1dc;
+	--color-amber-200: #fce3b9;
+	--color-amber-300: #fad18d;
+	--color-amber-400: #f8bf61;
+	--color-amber-500: #f5a623;
+	--color-amber-600: #dd9420;
+	--color-amber-700: #c4851a;
+	--color-amber-800: #a36e14;
+	--color-amber-900: #81570d;
+	--color-amber-950: #5f4007;
+
+	/* Danger — 오류/위험 */
+	--color-danger-50: #fbf4f4;
+	--color-danger-100: #f3dcdd;
+	--color-danger-200: #e7b9bb;
+	--color-danger-300: #d88d91;
+	--color-danger-400: #c96166;
+	--color-danger-500: #bd3d44;
+	--color-danger-600: #b4232b;
+	--color-danger-700: #901d24;
+	--color-danger-800: #77191f;
+	--color-danger-900: #5e151a;
+	--color-danger-950: #461115;
+
+	/* Highlight — 옐로우 팝 */
+	--color-highlight: #fce14d;
+	--color-highlight-soft: #fef6c2;
+
+	/* ═══════════════════ Semantic aliases ═══════════════════ */
+	--color-background: #ffffff;
+	--color-foreground: var(--color-slate-900);
+	--color-card: #ffffff;
+	--color-card-foreground: var(--color-slate-900);
+	--color-popover: #ffffff;
+	--color-popover-foreground: var(--color-slate-900);
+
+	--color-primary: var(--color-brand-600);
+	--color-primary-foreground: #ffffff;
+	--color-secondary: #f2f5fc;
+	--color-secondary-foreground: var(--color-slate-900);
+	--color-muted: #f2f5fc;
+	--color-muted-foreground: #4a5568;
+	--color-accent: var(--color-brand-50);
+	--color-accent-foreground: var(--color-brand-700);
+	--color-destructive: var(--color-danger-600);
+	--color-border: var(--color-slate-200);
+	--color-input: var(--color-slate-200);
+	--color-ring: var(--color-brand-600);
+
+	/* Brand semantic shortcuts */
+	--color-brand: var(--color-brand-600);
+	--color-brand-foreground: #ffffff;
+	--color-mint: var(--color-mint-500);
+
+	/* Ink / grounds */
+	--color-ink: var(--color-slate-900);
+	--color-ink-2: var(--color-slate-800);
+	--color-dark: var(--color-slate-950);
+
+	/* Surfaces / lines */
+	--color-surface: #f2f5fc;
+	--color-body: var(--color-slate-600);
+	--color-meta: var(--color-slate-500);
+	--color-line: var(--color-slate-200);
+	--color-line-2: #e8edf7;
+
+	/* On dark / on brand */
+	--color-on-dark: var(--color-slate-300);
+	--color-on-dark-muted: var(--color-slate-400);
+	--color-on-brand: var(--color-brand-100);
+	--color-on-brand-2: #e5edff;
+
+	/* ═══════════════════ Type scale (fluid) ═══════════════════ */
+	--text-display: clamp(2.5rem, 5.2vw, 4.375rem); /* 40 → 70 */
+	--text-display--line-height: 1.08;
+	--text-display--letter-spacing: -0.02em;
+	--text-display--font-weight: 800;
+
+	--text-h1: clamp(2.125rem, 4.6vw, 3.5rem); /* 34 → 56 */
+	--text-h1--line-height: 1.12;
+	--text-h1--letter-spacing: -0.02em;
+	--text-h1--font-weight: 800;
+
+	--text-h2: clamp(2.5rem, 5vw, 4.25rem); /* 40 → 68 */
+	--text-h2--line-height: 1.15;
+	--text-h2--letter-spacing: -0.015em;
+	--text-h2--font-weight: 800;
+
+	--text-h3: clamp(1.375rem, 2.2vw, 1.75rem); /* 22 → 28 */
+	--text-h3--line-height: 1.3;
+	--text-h3--font-weight: 800;
+
+	--text-h4: 1.375rem; /* 22 */
+	--text-h4--line-height: 1.4;
+	--text-h4--font-weight: 700;
+
+	--text-title: 1.3125rem; /* 21 — 카드 제목 */
+	--text-title--line-height: 1.4;
+	--text-title--font-weight: 700;
+
+	--text-lead: clamp(1.0625rem, 1.5vw, 1.375rem); /* 17 → 22 */
+	--text-lead--line-height: 1.7;
+
+	--text-body-lg: clamp(1rem, 1.4vw, 1.25rem); /* 16 → 20 */
+	--text-body-lg--line-height: 1.7;
+
+	--text-body: 1rem; /* 16 */
+	--text-body--line-height: 1.75;
+
+	--text-body-sm: 0.9375rem; /* 15 */
+	--text-body-sm--line-height: 1.7;
+
+	--text-caption: 0.875rem; /* 14 */
+	--text-caption--line-height: 1.6;
+
+	--text-meta: 0.8125rem; /* 13 */
+	--text-meta--line-height: 1.5;
+
+	--text-overline: 0.6875rem; /* 11 */
+	--text-overline--line-height: 1.4;
+	--text-overline--letter-spacing: 0.08em;
+
+	/* ═══════════════════ Radii / shadows ═══════════════════ */
+	--radius-sm: 4px;
+	--radius-md: 6px;
+	--radius-lg: 8px;
+	--radius-xl: 12px;
+	--radius-2xl: 20px;
+	--radius-card: 16px;
+	--radius-pill: 999px;
+
+	--shadow-card: 0 10px 30px rgba(20, 40, 90, 0.06);
+	--shadow-soft: 0 6px 20px rgba(20, 40, 90, 0.05);
+	--shadow-pop: 0 20px 50px rgba(11, 16, 32, 0.12);
+}
+
+@layer base {
+	* {
+		@apply border-border outline-ring/50;
+	}
+	html {
+		overflow-x: hidden;
+		scroll-behavior: smooth;
+		scroll-padding-top: 72px;
+		/* 오른쪽 스크롤바 숨김 (fullPage 스타일) — 스크롤 기능은 유지 */
+		scrollbar-width: none;
+		-ms-overflow-style: none;
+	}
+	html::-webkit-scrollbar {
+		display: none;
+	}
+	body {
+		@apply bg-background text-foreground antialiased;
+		font-family: var(--font-sans);
+		/* 한국어 줄바꿈 — 단어 단위 유지 */
+		word-break: keep-all;
+	}
+	a,
+	button,
+	[role="button"],
+	label[for],
+	select {
+		cursor: pointer;
+	}
+}
+
+/* 데스크톱: 전체화면 넘기기 스크롤은 JS(FullPageScroll)가 담당.
+   CSS 스냅은 JS scrollTo와 충돌하므로 사용하지 않는다. */
+@media (min-width: 1024px) {
+	html {
+		/* 앵커 클릭 시 섹션이 최상단에 맞도록 (헤더는 위에 오버레이) */
+		scroll-padding-top: 0;
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	html {
+		scroll-behavior: auto;
+	}
+}
