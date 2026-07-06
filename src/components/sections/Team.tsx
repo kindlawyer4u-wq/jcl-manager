@@ -56,7 +56,7 @@ export const Team = () => (
 								</span>
 							</div>
 						</div>
-						<ul className="mt-5 flex flex-col gap-2.5">
+						<ul className="mt-5 flex flex-col gap-1.5">
 							{m.bullets.map((b) => (
 								<li key={b} className="flex items-start gap-2.5">
 									<span className="mt-2 size-[7px] flex-none rounded-full bg-mint" />

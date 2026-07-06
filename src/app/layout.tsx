@@ -7,6 +7,7 @@ import type { ReactNode } from "react";
 import { JsonLd } from "@/components/JsonLd";
 import { Header } from "@/components/layout/Header";
 import { FullPageScroll } from "@/components/shared/FullPageScroll";
+import { QuickRail } from "@/components/shared/QuickRail";
 import { ScrollCue } from "@/components/shared/ScrollCue";
 import { siteConfig } from "@/config/site";
 import { organizationSchema, websiteSchema } from "@/lib/schema";
@@ -62,6 +63,7 @@ const RootLayout = ({ children }: { children: ReactNode }) => (
 			<Header />
 			<FullPageScroll />
 			<ScrollCue />
+			<QuickRail />
 			<main className="flex-1">{children}</main>
 			<Analytics />
 			<SpeedInsights />

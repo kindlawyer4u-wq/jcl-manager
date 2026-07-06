@@ -44,8 +44,9 @@ export const FullPageScroll = () => {
 			const curBottom = curTop + cur.offsetHeight;
 			const down = e.deltaY > 0;
 
-			// 화면보다 "확실히" 큰 섹션만 내부 스크롤 허용(dvh/innerHeight 미세차 흡수)
-			const overflows = cur.offsetHeight > vh + 24;
+			// 화면보다 "확실히" 큰 섹션만 내부 스크롤 허용.
+			// 여유(80px)까지는 strict 페이징(패딩만 살짝 클리핑) → 애매한 내부 스크롤 방지
+			const overflows = cur.offsetHeight > vh + 80;
 			if (overflows) {
 				if (down && y + vh < curBottom - 4) return; // 아직 섹션 끝이 아님 → 네이티브 스크롤
 				if (!down && y > curTop + 4) return; // 아직 섹션 처음이 아님 → 네이티브 스크롤

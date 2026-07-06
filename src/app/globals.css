@@ -147,7 +147,7 @@
 	--text-h1--letter-spacing: -0.02em;
 	--text-h1--font-weight: 800;
 
-	--text-h2: clamp(2.5rem, 5vw, 4.25rem); /* 40 → 68 */
+	--text-h2: clamp(2.375rem, 4.5vw, 4rem); /* 38 → 64 */
 	--text-h2--line-height: 1.15;
 	--text-h2--letter-spacing: -0.015em;
 	--text-h2--font-weight: 800;
@@ -242,5 +242,45 @@
 @media (prefers-reduced-motion: reduce) {
 	html {
 		scroll-behavior: auto;
+	}
+}
+
+/* 우측 퀵메뉴 전화패널 — 깜빡임 + 사선 샤인 + 아이콘 울림 */
+@keyframes rail-blink {
+	0%,
+	100% {
+		background-color: var(--color-brand-700);
+	}
+	50% {
+		background-color: var(--color-brand-500);
+	}
+}
+@keyframes rail-shine {
+	0%,
+	58% {
+		transform: translateX(-130%);
+	}
+	82%,
+	100% {
+		transform: translateX(130%);
+	}
+}
+@keyframes rail-ring {
+	0%,
+	55%,
+	100% {
+		transform: rotate(0) scale(1);
+	}
+	60% {
+		transform: rotate(-12deg) scale(1.1);
+	}
+	68% {
+		transform: rotate(12deg) scale(1.1);
+	}
+	76% {
+		transform: rotate(-9deg) scale(1.08);
+	}
+	84% {
+		transform: rotate(6deg) scale(1.04);
 	}
 }

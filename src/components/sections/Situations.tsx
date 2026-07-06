@@ -40,23 +40,23 @@ const cases = [
 export const Situations = () => (
 	<section
 		id="situations"
-		className="bg-surface pt-[clamp(6rem,7vh,7rem)] pb-[clamp(3rem,6vh,5.25rem)] lg:flex lg:min-h-dvh lg:snap-start lg:flex-col lg:justify-center"
+		className="bg-surface pt-[clamp(5rem,6vh,6rem)] pb-[clamp(2rem,4vh,3.5rem)] lg:flex lg:min-h-dvh lg:snap-start lg:flex-col lg:justify-center"
 	>
 		<Container>
 			<Heading level={2} size="h2" className="text-ink">
 				이런 상황이라면 지금 바로 검토가 필요합니다
 			</Heading>
-			<Text size="body-lg" className="mt-5 max-w-[900px] text-muted-foreground">
+			<Text size="body-lg" className="mt-4 max-w-[900px] text-muted-foreground">
 				아래 상황 중 하나라도 해당된다면 즉시 법률 검토를 받으세요.
 			</Text>
-			<div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+			<div className="mt-7 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
 				{cases.map((c) => (
-					<Card key={c.no}>
+					<Card key={c.no} padding="none" className="p-5">
 						<Badge className="px-4 py-1.5">{c.no}</Badge>
-						<Heading level={3} size="title" className="mt-5 text-ink">
+						<Heading level={3} size="title" className="mt-4 text-ink">
 							{c.title}
 						</Heading>
-						<Text size="body-sm" className="mt-3.5 text-body">
+						<Text size="body-sm" className="mt-2.5 text-body">
 							{c.body}
 						</Text>
 					</Card>

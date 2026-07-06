@@ -40,10 +40,11 @@ export const siteConfig = {
 		addressLocality: "강남구",
 		addressRegion: "서울특별시",
 		postalCode: "06160",
-		// TODO(client): 실제 카카오 채널 URL
-		kakaoChannel: "https://pf.kakao.com/_jclpartners",
-		// TODO(client): 실제 네이버 블로그 URL
-		naverBlog: "https://blog.naver.com/jclpartners",
+		kakaoChannel: "https://pf.kakao.com/_jfgxfG",
+		naverBlog: "https://blog.naver.com/partners4u",
+		youtube:
+			"https://www.youtube.com/@%EC%A0%9C%EC%9D%B4%EC%94%A8%EC%97%98%ED%8C%8C%ED%8A%B8%EB%84%88%EC%8A%A4/videos",
+		naverPlace: "https://naver.me/xHghsf16",
 		mapUrl: "https://map.kakao.com/",
 	},
 	// 단일 랜딩 섹션 앵커 (design 기준)

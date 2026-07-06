@@ -156,14 +156,18 @@ test.describe("전체화면 넘기기 스크롤 (FullPageScroll)", () => {
 		}
 	});
 
-	test("진행 절차 섹션 제목이 충분히 크게 렌더된다", async ({ page }) => {
+	test("모든 섹션 제목이 충분히 크게 렌더된다", async ({ page }) => {
 		await page.goto("/");
 		await page.waitForLoadState("networkidle");
-		const size = await page.evaluate(() => {
-			const h = document.querySelector("#process h2");
-			return h ? Number.parseFloat(getComputedStyle(h).fontSize) : 0;
-		});
-		expect(size).toBeGreaterThanOrEqual(40);
+		const sizes = await page.evaluate(() =>
+			["#problem", "#situations", "#requirements", "#process", "#team", "#columns", "#contact"].map(
+				(sel) => {
+					const h = document.querySelector(`${sel} h2`);
+					return h ? Number.parseFloat(getComputedStyle(h).fontSize) : 0;
+				},
+			),
+		);
+		for (const s of sizes) expect(s).toBeGreaterThanOrEqual(36);
 	});
 
 	test("줌/리사이즈 시 현재 섹션으로 재정렬된다 (어긋남 없음)", async ({ page }) => {
@@ -230,5 +234,32 @@ test.describe("전체화면 넘기기 스크롤 (FullPageScroll)", () => {
 		}
 		await page.waitForTimeout(400);
 		expect(Number(await cue.evaluate((el) => getComputedStyle(el).opacity))).toBeLessThan(0.5);
+	});
+
+	test("모든 섹션이 뷰포트+80 이내 (내부 스크롤 버그 방지)", async ({ page }) => {
+		await page.setViewportSize({ width: 1440, height: 820 });
+		await page.goto("/");
+		await page.waitForLoadState("networkidle");
+		const { heights, vh } = await page.evaluate(() => ({
+			heights: Array.from(
+				document.querySelectorAll<HTMLElement>("main > section, main > header"),
+			).map((s) => s.offsetHeight),
+			vh: window.innerHeight,
+		}));
+		heights.forEach((h, i) => {
+			expect(h, `섹션 ${i} 오버플로(내부 스크롤 유발)`).toBeLessThanOrEqual(vh + 80);
+		});
+	});
+
+	test("우측 고정 퀵메뉴가 실제 링크로 연결된다", async ({ page }) => {
+		await page.setViewportSize({ width: 1440, height: 900 });
+		await page.goto("/");
+		await page.waitForLoadState("networkidle");
+		const rail = page.locator('aside[aria-label="빠른 상담"]');
+		await expect(rail).toBeVisible();
+		await expect(rail.locator('a[href="https://pf.kakao.com/_jfgxfG"]')).toHaveCount(1);
+		await expect(rail.locator('a[href="https://blog.naver.com/partners4u"]')).toHaveCount(1);
+		await expect(rail.locator('a[href="https://naver.me/xHghsf16"]')).toHaveCount(1);
+		await expect(rail.locator('a[href="tel:02-2135-4974"]')).toHaveCount(1);
 	});
 });
