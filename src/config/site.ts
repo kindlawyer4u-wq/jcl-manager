@@ -42,6 +42,7 @@ export const siteConfig = {
 		postalCode: "06160",
 		kakaoChannel: "https://pf.kakao.com/_jfgxfG",
 		naverBlog: "https://blog.naver.com/partners4u",
+		blog: "https://jclblog.com/",
 		youtube:
 			"https://www.youtube.com/@%EC%A0%9C%EC%9D%B4%EC%94%A8%EC%97%98%ED%8C%8C%ED%8A%B8%EB%84%88%EC%8A%A4/videos",
 		naverPlace: "https://naver.me/xHghsf16",

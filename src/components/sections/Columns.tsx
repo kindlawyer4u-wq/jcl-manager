@@ -5,27 +5,31 @@ import { Container } from "@/components/ui/container";
 import { Heading, Text } from "@/components/ui/text";
 import { siteConfig } from "@/config/site";
 
-// TODO(client): 실제 칼럼으로 교체. 광고규정상 '전부 승소' 등 결과 단정 대신 정보성 제목 사용.
+// jclblog.com 실제 칼럼 연동. 광고규정상 '전부 승소' 등 결과 단정 대신 정보성 제목 사용.
 const columns = [
 	{
-		tag: "이행청구",
-		title: "HUG 보증보험 이행청구, 접수 전 반드시 확인할 3가지",
+		tag: "민간임대",
+		title: "삼일 파라뷰 사태, 민간임대 보증사고 이행청구 대응법",
 		image: "/images/col-1.jpg",
+		href: "https://jclblog.com/bbs/board.php?bo_table=column&wr_id=107",
 	},
 	{
-		tag: "대항력",
-		title: "전입신고·확정일자, 대항력을 지키는 정확한 순서",
+		tag: "건설사 부도",
+		title: "건설사 부도로 인한 민간임대 보증금, 반환받는 절차",
 		image: "/images/col-2.jpg",
+		href: "https://jclblog.com/bbs/board.php?bo_table=column&wr_id=111",
 	},
 	{
-		tag: "지급 거절 대응",
-		title: "HUG가 지급을 거절했을 때 대응하는 방법",
+		tag: "지급 거절",
+		title: "묵시적 갱신을 이유로 한 HUG 지급 거절, 대응 방법",
 		image: "/images/col-3.jpg",
+		href: "https://jclblog.com/bbs/board.php?bo_table=column&wr_id=106",
 	},
 	{
-		tag: "전세사기",
-		title: "임대인이 잠적했다면? 보증금 회수 절차 총정리",
+		tag: "강제집행",
+		title: "HUG 지급 거절 시 소송·계좌압류로 보증금 회수하기",
 		image: "/images/col-4.jpg",
+		href: "https://jclblog.com/bbs/board.php?bo_table=column&wr_id=94",
 	},
 ];
 
@@ -45,9 +49,12 @@ export const Columns = () => (
 			</div>
 			<div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
 				{columns.map((c) => (
-					<article
+					<a
 						key={c.title}
-						className="flex flex-col overflow-hidden rounded-lg bg-white shadow-card"
+						href={c.href}
+						target="_blank"
+						rel="noopener noreferrer"
+						className="group flex flex-col overflow-hidden rounded-lg bg-white shadow-card transition duration-200 hover:-translate-y-1 hover:shadow-lg focus-visible:outline-2 focus-visible:outline-brand focus-visible:outline-offset-2"
 					>
 						<div className="relative aspect-[16/10] bg-slate-800">
 							<Image
@@ -55,7 +62,7 @@ export const Columns = () => (
 								alt=""
 								fill
 								sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 280px"
-								className="object-cover"
+								className="object-cover transition duration-300 group-hover:scale-105"
 							/>
 							<div aria-hidden className="absolute inset-0 bg-slate-950/25" />
 							<Badge variant="ghost" className="absolute top-4 left-4 px-4 py-1.5">
@@ -63,18 +70,19 @@ export const Columns = () => (
 							</Badge>
 						</div>
 						<div className="flex flex-1 flex-col p-6">
-							<h3 className="font-bold text-body-lg text-ink leading-snug">{c.title}</h3>
+							<h3 className="font-bold text-body-lg text-ink leading-snug group-hover:text-brand">
+								{c.title}
+							</h3>
 							<div className="mt-auto pt-7 text-right text-meta text-slate-400">
 								제이씨엘파트너스 변호사 칼럼
 							</div>
 						</div>
-					</article>
+					</a>
 				))}
 			</div>
 			<div className="mt-11 text-center">
-				{/* TODO(client): 블로그 연동 시 실제 URL로 교체 */}
 				<a
-					href={siteConfig.contact.naverBlog}
+					href={siteConfig.contact.blog}
 					target="_blank"
 					rel="noopener noreferrer"
 					className="inline-flex items-center gap-4 rounded-full bg-brand px-8 py-4 font-bold text-body-lg text-white transition hover:brightness-110"

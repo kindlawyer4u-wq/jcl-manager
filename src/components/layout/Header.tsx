@@ -53,7 +53,7 @@ export const Header = () => {
 		>
 			<div className="flex h-16 items-center justify-between px-[clamp(1rem,2.5vw,2.5rem)] md:h-[88px]">
 				<a href="#top" className="shrink-0" aria-label={siteConfig.name}>
-					<Logo label={siteConfig.tagline} />
+					<Logo dark={dark} />
 				</a>
 
 				<nav className="hidden items-center gap-[clamp(0.5rem,1.5vw,2rem)] lg:flex">

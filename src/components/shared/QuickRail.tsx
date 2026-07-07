@@ -7,7 +7,7 @@ const [phoneArea, ...phoneRest] = siteConfig.contact.tel.split("-");
 const links = [
 	{ label: "카톡", href: siteConfig.contact.kakaoChannel, img: "/kakao.svg" },
 	{ label: "유튜브", href: siteConfig.contact.youtube, img: "/youtube.svg" },
-	{ label: "블로그", href: siteConfig.contact.naverBlog, img: "/blog.svg" },
+	{ label: "블로그", href: siteConfig.contact.blog, img: "/blog.svg" },
 ];
 
 const cell =

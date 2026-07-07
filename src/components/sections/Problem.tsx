@@ -8,20 +8,17 @@ import { Heading, Text } from "@/components/ui/text";
 const cards = [
 	{
 		n: "1",
-		title: "건설사 회생신청",
-		subtitle: "보증금 직접 반환이 어려워진 상황",
-		body: "삼일파라뷰 건설사가 회생신청을 하면서 임차인이 임대인에게 직접 보증금을 돌려받기가 사실상 어렵게 됐습니다. 세대당 약 3억 원에 달하는 보증금을 지키려면 HUG(주택도시보증공사) 보증보험 이행청구 절차를 성공시키는 것이 손해를 최소화하는 가장 확실한 방법입니다.",
+		title: "임대인 회생, 파산으로 보증금반환이 어려워진 상황",
+		body: "최근 임대인이 회생, 파산을 해 보증금을 반환받지 못하는 사례가 급증하고 있습니다. 허그에 가입된 임차인은 허그 이행청구를 통해 보증금을 회수하는 것이 피해를 최소화하는 가장 확실한 방법입니다.",
 	},
 	{
 		n: "2",
-		title: "HUG의 부당한 지급거절 증가",
-		subtitle: "커져가는 세입자들의 불안",
+		title: "HUG의 부당한 지급거절, 커져가는 세입자들의 불안",
 		body: "보증보험에 가입했음에도 불구하고 이해할 수 없는 사유로 HUG가 지급거절을 하여 피해를 입는 사례가 증가하고 있습니다. 이로 인해 임차인들의 불안감이 커지고 있는 상황입니다.",
 	},
 	{
 		n: "3",
-		title: "보증 기간 만료",
-		subtitle: "임대인 비협조로 갱신 불가",
+		title: "보증 기간 만료, 임대인 비협조로 갱신 불가",
 		body: "임대차 계약 기간은 남아 있으나 HUG 보증 기간이 만료된 경우, 임대인이 갱신에 협조하지 않는 사례가 발생하고 있습니다. 임차인이 직접 수수료를 부담해서라도 보증 갱신을 완료하는 것이 보증금을 지키는 핵심입니다.",
 	},
 ];
@@ -45,7 +42,6 @@ export const Problem = () => (
 						<h3 className="font-extrabold text-h4 text-white">
 							{c.n}. {c.title}
 						</h3>
-						<p className="mt-1 font-extrabold text-title text-white">{c.subtitle}</p>
 						<p className="mt-5 text-body text-on-brand-2 leading-relaxed">{c.body}</p>
 					</Card>
 				))}
@@ -56,8 +52,9 @@ export const Problem = () => (
 				</IconCircle>
 				<Text className="text-ink-2">
 					<strong className="font-extrabold">보증금 반환 문제는 시간과의 싸움</strong>입니다. 대응
-					시기를 놓치면 피해가 걷잡을 수 없이 커질 수 있습니다. HUG 이행청구는 서류·기한 요건이
-					엄격해 초기 단계부터 철저한 준비가 필요합니다.
+					시기를 놓치면 피해가 걷잡을 수 없이 커질 수 있습니다.
+					<br />
+					HUG 이행청구는 서류·기한 요건이 엄격해 초기 단계부터 철저한 준비가 필요합니다.
 				</Text>
 			</Card>
 		</Container>
