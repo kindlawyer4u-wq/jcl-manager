@@ -6,6 +6,7 @@ import localFont from "next/font/local";
 import type { ReactNode } from "react";
 import { JsonLd } from "@/components/JsonLd";
 import { Header } from "@/components/layout/Header";
+import { FitToViewport } from "@/components/shared/FitToViewport";
 import { FullPageScroll } from "@/components/shared/FullPageScroll";
 import { QuickRail } from "@/components/shared/QuickRail";
 import { ScrollCue } from "@/components/shared/ScrollCue";
@@ -62,6 +63,7 @@ const RootLayout = ({ children }: { children: ReactNode }) => (
 			<JsonLd data={websiteSchema()} />
 			<Header />
 			<FullPageScroll />
+			<FitToViewport />
 			<ScrollCue />
 			<QuickRail />
 			<main className="flex-1">{children}</main>

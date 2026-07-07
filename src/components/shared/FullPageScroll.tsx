@@ -14,7 +14,9 @@ export const FullPageScroll = () => {
 	useEffect(() => {
 		const desktop = window.matchMedia("(min-width: 1024px)");
 		const reduce = window.matchMedia("(prefers-reduced-motion: reduce)");
-		if (!desktop.matches || reduce.matches) return;
+		// 데스크톱(≥1024px)에서만 활성. 창 크기를 실시간 재확인하므로
+		// 데스크톱→모바일 폭으로 줄여도 즉시 네이티브 스크롤로 전환된다.
+		const enabled = () => desktop.matches && !reduce.matches;
 
 		let animating = false;
 		let timer: number | undefined;
@@ -24,6 +26,8 @@ export const FullPageScroll = () => {
 			Array.from(document.querySelectorAll<HTMLElement>("main > section, main > header"));
 
 		const onWheel = (e: WheelEvent) => {
+			// 모바일 폭·감소된 모션: 페이지 넘김 비활성화 → 네이티브 스크롤
+			if (!enabled()) return;
 			// 애니메이션 중에는 모든 입력 차단
 			if (animating) {
 				e.preventDefault();
@@ -69,6 +73,7 @@ export const FullPageScroll = () => {
 
 		// 줌/리사이즈 시 가장 가까운 섹션으로 즉시 재정렬 (해상도 변경에 자동 대응)
 		const onResize = () => {
+			if (!enabled()) return; // 모바일 폭에서는 재정렬하지 않음
 			window.clearTimeout(resizeTimer);
 			resizeTimer = window.setTimeout(() => {
 				const sections = getSections();

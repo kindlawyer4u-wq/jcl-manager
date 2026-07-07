@@ -245,6 +245,48 @@
 	}
 }
 
+/* ─────────────────────────────────────────────────────────────────────────────
+   짧은 뷰포트(노트북 등) 대응 — 풀페이지 섹션이 세로로 넘치지 않도록
+   타이포 스케일/행간을 세로높이 단계별로 축소. 모든 text-* 유틸이 이 변수를
+   참조하므로 여기서만 덮으면 페이지 전체가 비례 축소된다. (데스크톱에만 적용)
+   ───────────────────────────────────────────────────────────────────────────── */
+@media (min-width: 1024px) and (max-height: 860px) {
+	:root {
+		--text-display: clamp(2rem, 4vw, 3.25rem);
+		--text-h1: clamp(1.75rem, 3.4vw, 2.75rem);
+		--text-h2: clamp(1.875rem, 3.4vw, 3rem);
+		--text-h2--line-height: 1.12;
+		--text-h3: clamp(1.25rem, 1.9vw, 1.5rem);
+		--text-h4: 1.25rem;
+		--text-title: 1.1875rem;
+		--text-lead: clamp(1rem, 1.3vw, 1.2rem);
+		--text-lead--line-height: 1.6;
+		--text-body-lg: clamp(0.95rem, 1.2vw, 1.125rem);
+		--text-body-lg--line-height: 1.6;
+		--text-body--line-height: 1.65;
+		--text-body-sm--line-height: 1.6;
+	}
+}
+@media (min-width: 1024px) and (max-height: 760px) {
+	:root {
+		--text-h2: clamp(1.625rem, 2.8vw, 2.375rem);
+		--text-title: 1.125rem;
+		--text-h4: 1.1875rem;
+		--text-body: 0.9375rem;
+		--text-body-sm: 0.875rem;
+		--text-body-lg: clamp(0.9rem, 1.1vw, 1.0625rem);
+		--text-lead: clamp(0.95rem, 1.2vw, 1.125rem);
+	}
+}
+@media (min-width: 1024px) and (max-height: 680px) {
+	:root {
+		--text-h2: clamp(1.5rem, 2.4vw, 2rem);
+		--text-title: 1.0625rem;
+		--text-body: 0.9rem;
+		--text-body-sm: 0.84rem;
+	}
+}
+
 /* 우측 퀵메뉴 전화패널 — 깜빡임 + 사선 샤인 + 아이콘 울림 */
 @keyframes rail-blink {
 	0%,

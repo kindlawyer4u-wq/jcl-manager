@@ -30,7 +30,7 @@ const rows = [
 export const Requirements = () => (
 	<section
 		id="requirements"
-		className="bg-surface pt-[clamp(5.5rem,7vh,6.5rem)] pb-[clamp(2.5rem,5vh,4rem)] lg:flex lg:min-h-dvh lg:snap-start lg:flex-col lg:justify-center"
+		className="bg-surface pt-[clamp(4rem,7vh,6.5rem)] pb-[clamp(2rem,5vh,4rem)] lg:flex lg:min-h-dvh lg:snap-start lg:flex-col lg:justify-center"
 	>
 		<Container className="max-w-[1400px]">
 			<div className="text-center">
@@ -42,11 +42,11 @@ export const Requirements = () => (
 					있습니다.
 				</Text>
 			</div>
-			<div className="mt-7 flex flex-col gap-4">
+			<div className="mt-[clamp(1rem,2.6vh,1.75rem)] flex flex-col gap-[clamp(0.6rem,1.4vh,1rem)]">
 				{rows.map((r) => (
-					<div key={r.title} className="grid items-stretch gap-5 md:grid-cols-[1.6fr_1fr]">
+					<div key={r.title} className="grid items-stretch gap-2 md:grid-cols-[1.6fr_1fr] md:gap-5">
 						{/* 왼쪽: 요건 카드 (파란 테두리 2px, 오른쪽과 높이 일치) */}
-						<div className="flex h-full items-start gap-4 rounded-card border-2 border-brand-200 bg-white p-5 sm:p-6">
+						<div className="flex h-full items-start gap-4 rounded-card border-2 border-brand-200 bg-white p-[clamp(0.9rem,1.9vh,1.5rem)]">
 							<IconCircle tone="brand" size="sm">
 								<Check className="size-4" aria-hidden />
 							</IconCircle>
@@ -54,13 +54,13 @@ export const Requirements = () => (
 								<Heading level={3} size="title" className="text-ink">
 									{r.title}
 								</Heading>
-								<Text size="body-sm" className="mt-2 text-body">
+								<Text size="body-sm" className="mt-[clamp(0.25rem,0.8vh,0.5rem)] text-body">
 									{r.desc}
 								</Text>
 							</div>
 						</div>
 						{/* 오른쪽: 말풍선 (왼쪽 카드와 동일 높이) */}
-						<div className="relative flex h-full items-center gap-4 rounded-card bg-brand p-5 sm:p-6">
+						<div className="relative flex h-full items-center gap-4 rounded-card bg-brand p-[clamp(0.9rem,1.9vh,1.5rem)]">
 							<span
 								aria-hidden
 								className="absolute top-1/2 -left-3 hidden -translate-y-1/2 border-y-[12px] border-y-transparent border-r-[14px] border-r-brand md:block"
