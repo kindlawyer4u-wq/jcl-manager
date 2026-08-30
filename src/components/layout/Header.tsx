@@ -23,7 +23,12 @@ export const Header = () => {
 		const update = () => {
 			const probeY = window.scrollY + 8;
 			const sections = Array.from(
-				document.querySelectorAll<HTMLElement>("main > section, main > header"),
+				/*
+				 * ⚠️ `main > article` 을 함께 본다. 칼럼 상세가 <article> 로 감싸는데
+				 *    이걸 빼면 아무 것도 안 맞아 기본값(어두움)으로 떨어지고,
+				 *    흰 배경 위에 흰 글씨가 되어 헤더가 통째로 안 보인다(실측).
+				 */
+				document.querySelectorAll<HTMLElement>("main > section, main > header, main > article"),
 			);
 			let bg = "rgb(5, 7, 11)";
 			for (const s of sections) {

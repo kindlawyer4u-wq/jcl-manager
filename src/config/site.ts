@@ -11,6 +11,11 @@ export const siteConfig = {
 	name: "제이씨엘파트너스",
 	nameEn: "JCL PARTNERS",
 	tagline: "HUG 보증보험 이행청구",
+	/*
+	 * 광고책임변호사. 대한변협 광고규정 대응으로 **칼럼 상세에 반드시 표기**한다.
+	 * ⚠️ 글쓴이가 본문에 안 넣어도 화면이 붙인다 - 규정 준수를 사람의 기억에 맡기지 않는다.
+	 */
+	adResponsibleLawyer: "정종욱",
 	// TODO(client): 실제 배포 도메인으로 교체
 	url: "https://jclpartners.co.kr",
 	title: {

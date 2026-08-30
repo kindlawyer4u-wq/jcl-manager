@@ -358,3 +358,351 @@
 		animation: none;
 	}
 }
+
+/* ═════════════════════════════════════════════════════════════════════════════
+   칼럼 본문 조판 — `.hug-article`
+   ─────────────────────────────────────────────────────────────────────────────
+   어드민에서 HTML 을 붙여넣어 글을 쓴다. 그러면 본문의 모양을 정하는 것은
+   붙여넣은 style 인가, 사이트의 CSS 인가. **이 사이트는 사이트가 정한다.**
+   정화기(`lib/article-html.ts`)가 style 을 전부 걷어 내고 구조와 data-box 만 남긴다.
+
+   ⚠️ 단일 라이트 테마다. `globals.css` 위쪽 주석이 정한 규칙을 따른다 —
+      본문에 다크 모드를 넣으면 그 결정과 어긋난다.
+   ═════════════════════════════════════════════════════════════════════════════ */
+
+.hug-article {
+	/* 읽기 폭. 랜딩은 넓게 쓰지만 읽는 화면은 좁아야 눈이 줄을 안 놓친다 (한 줄 38~42자) */
+	max-width: 720px;
+	margin-inline: auto;
+	/* 상속 차단 — 랜딩의 keep-all·자간이 본문에 오면 어절 사이가 벌어진다 */
+	word-break: normal;
+	overflow-wrap: break-word;
+	letter-spacing: normal;
+	font-size: 17px;
+	line-height: 1.85;
+	color: var(--color-slate-700);
+}
+@media (max-width: 640px) {
+	.hug-article {
+		font-size: 15.5px;
+		line-height: 1.8;
+	}
+}
+
+/* ── 제목 ─────────────────────────────────────────────────────────────── */
+.hug-article h2 {
+	font-size: 25px;
+	font-weight: 800;
+	line-height: 1.38;
+	letter-spacing: -0.02em;
+	color: var(--color-slate-900);
+	margin: 58px 0 14px;
+	text-wrap: balance;
+	scroll-margin-top: 96px; /* 고정 헤더 높이 */
+}
+.hug-article > h2:first-child {
+	margin-top: 0;
+}
+/* 제목 앞 짧은 브랜드 규칙. 브랜드 색을 본문에서 여기 한 곳에만 쓴다 */
+.hug-article h2::before {
+	content: "";
+	display: block;
+	width: 34px;
+	height: 3px;
+	border-radius: 2px;
+	background: var(--color-brand-600);
+	margin-bottom: 14px;
+}
+.hug-article h3 {
+	font-size: 19px;
+	font-weight: 700;
+	line-height: 1.5;
+	letter-spacing: -0.015em;
+	color: var(--color-slate-900);
+	margin: 36px 0 10px;
+	scroll-margin-top: 96px;
+}
+.hug-article h4 {
+	font-size: 16px;
+	font-weight: 700;
+	color: var(--color-slate-700);
+	margin: 26px 0 8px;
+}
+@media (max-width: 640px) {
+	.hug-article h2 {
+		font-size: 21px;
+		margin-top: 44px;
+	}
+	.hug-article h3 {
+		font-size: 17px;
+	}
+}
+
+/* ── 문단 ─────────────────────────────────────────────────────────────── */
+.hug-article p {
+	margin: 0 0 20px;
+}
+.hug-article p:last-child {
+	margin-bottom: 0;
+}
+/* 리드 문단 — 첫 문단만 읽고 나가는 사람이 가장 많다 */
+.hug-article > p:first-of-type {
+	font-size: 18.5px;
+	line-height: 1.8;
+	color: var(--color-slate-800);
+	padding-bottom: 26px;
+	border-bottom: 1px solid var(--color-slate-100);
+	margin-bottom: 30px;
+}
+.hug-article strong,
+.hug-article b {
+	font-weight: 700;
+	color: var(--color-slate-900);
+}
+.hug-article em,
+.hug-article i {
+	font-style: italic;
+}
+.hug-article a {
+	color: var(--color-brand-600);
+	font-weight: 500;
+	text-decoration: underline;
+	text-decoration-thickness: 1px;
+	text-underline-offset: 3px;
+	text-decoration-color: var(--color-brand-200);
+}
+.hug-article a:hover {
+	text-decoration-color: var(--color-brand-600);
+}
+
+/* ── 목록 — 기본 불릿을 버리고 브랜드 마커를 쓴다 ──────────────────────── */
+.hug-article ul,
+.hug-article ol {
+	margin: 0 0 22px;
+	padding: 0;
+	list-style: none;
+}
+.hug-article li {
+	position: relative;
+	padding-left: 22px;
+	margin-bottom: 9px;
+}
+.hug-article ul > li::before {
+	content: "";
+	position: absolute;
+	left: 4px;
+	top: 0.72em;
+	width: 6px;
+	height: 6px;
+	border-radius: 50%;
+	background: var(--color-brand-600);
+}
+.hug-article ol {
+	counter-reset: hug;
+}
+.hug-article ol > li {
+	padding-left: 30px;
+}
+.hug-article ol > li::before {
+	counter-increment: hug;
+	content: counter(hug);
+	position: absolute;
+	left: 0;
+	top: 0.28em;
+	width: 21px;
+	height: 21px;
+	border-radius: 50%;
+	background: var(--color-brand-50);
+	color: var(--color-brand-600);
+	font-size: 11.5px;
+	font-weight: 600;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+.hug-article li > ul,
+.hug-article li > ol {
+	margin: 9px 0 0;
+}
+.hug-article li > ul > li::before {
+	background: var(--color-brand-200);
+}
+@media (max-width: 640px) {
+	/* 본문이 15.5px/1.8 로 줄면 마커가 살짝 올라간다 */
+	.hug-article ul > li::before {
+		top: 0.68em;
+	}
+	.hug-article ol > li::before {
+		top: 0.2em;
+	}
+}
+
+/* ── 인용 — 판례·조문 ─────────────────────────────────────────────────── */
+.hug-article blockquote {
+	margin: 28px 0;
+	padding: 20px 24px;
+	background: var(--color-brand-50);
+	border-left: 3px solid var(--color-brand-600);
+	border-radius: 0 12px 12px 0;
+	font-size: 16px;
+	line-height: 1.8;
+}
+.hug-article blockquote p {
+	margin-bottom: 10px;
+}
+.hug-article blockquote p:last-child {
+	margin-bottom: 0;
+}
+/* 출처 표기 — 인용의 마지막 줄을 작게 */
+.hug-article blockquote > p:last-child:not(:only-child) {
+	font-size: 12.5px;
+	color: var(--color-slate-500);
+	margin-top: 12px;
+}
+
+/* ── 표 — 정화기가 .article-scroll 로 감싼다 ──────────────────────────── */
+.hug-article .article-scroll {
+	margin: 28px 0;
+	overflow-x: auto;
+	border: 1px solid var(--color-slate-200);
+	border-radius: 12px;
+	background: #fff;
+	-webkit-overflow-scrolling: touch;
+}
+.hug-article table {
+	border-collapse: collapse;
+	width: 100%;
+	min-width: 520px;
+	font-size: 15px;
+}
+.hug-article th,
+.hug-article td {
+	text-align: left;
+	padding: 13px 16px;
+	border-bottom: 1px solid var(--color-slate-100);
+	vertical-align: top;
+}
+.hug-article thead th,
+/* 위지윅이 머리행을 thead 없이 tbody 로 내는 경우가 있다. 그때도 첫 행이 th 면 머리로 본다 */
+	.hug-article tbody
+	tr:first-child
+	th {
+	background: var(--color-brand-50);
+	color: var(--color-slate-900);
+	font-weight: 700;
+	font-size: 14px;
+	border-bottom: 1px solid var(--color-brand-100);
+}
+.hug-article tbody tr:last-child td {
+	border-bottom: 0;
+}
+.hug-article tbody td:first-child {
+	font-weight: 700;
+	color: var(--color-slate-900);
+}
+
+/* ── 이미지 ───────────────────────────────────────────────────────────── */
+.hug-article img {
+	max-width: 100%;
+	height: auto;
+	display: block;
+	border-radius: 14px;
+}
+.hug-article figure {
+	margin: 32px 0;
+}
+.hug-article figure > img {
+	width: 100%;
+}
+.hug-article figcaption {
+	margin-top: 11px;
+	text-align: center;
+	font-size: 13.5px;
+	line-height: 1.6;
+	color: var(--color-slate-500);
+}
+.hug-article > img,
+.hug-article p > img {
+	margin: 28px auto;
+}
+
+/* ── 구분선 — 가로 전체를 긋지 않는다. 화제 전환은 조용해야 한다 ───────── */
+.hug-article hr {
+	margin: 44px auto;
+	border: 0;
+	height: 1px;
+	width: 64px;
+	background: var(--color-slate-200);
+}
+
+/* ── 의미 박스 — 글쓴이는 색이 아니라 뜻을 고른다 ──────────────────────── */
+.hug-article [data-box] {
+	margin: 28px 0;
+	padding: 20px 24px;
+	border-radius: 14px;
+	font-size: 16px;
+	line-height: 1.78;
+}
+.hug-article [data-box] > *:first-child {
+	margin-top: 0;
+}
+.hug-article [data-box] > *:last-child {
+	margin-bottom: 0;
+}
+/*
+ * 이름표를 CSS 가 붙인다. 글쓴이가 「주의」라고 안 적어도 박스만 고르면 붙고,
+ * 나중에 문구를 바꿀 때 글 100편이 아니라 이 한 줄을 고친다.
+ */
+.hug-article [data-box]::before {
+	display: block;
+	font-size: 12.5px;
+	font-weight: 700;
+	margin-bottom: 9px;
+}
+.hug-article [data-box="point"] {
+	background: var(--color-brand-50);
+	border: 1px solid var(--color-brand-100);
+}
+.hug-article [data-box="point"]::before {
+	content: "핵심";
+	color: var(--color-brand-600);
+}
+.hug-article [data-box="info"] {
+	background: var(--color-slate-50);
+	border: 1px solid var(--color-slate-200);
+}
+.hug-article [data-box="info"]::before {
+	content: "참고";
+	color: var(--color-slate-500);
+}
+.hug-article [data-box="warn"] {
+	background: var(--color-amber-50);
+	border: 1px solid var(--color-amber-200);
+}
+.hug-article [data-box="warn"]::before {
+	content: "주의";
+	color: var(--color-amber-700);
+}
+.hug-article [data-box="sum"] {
+	background: var(--color-mint-50);
+	border: 1px solid var(--color-mint-200);
+}
+.hug-article [data-box="sum"]::before {
+	content: "정리";
+	color: var(--color-mint-700);
+}
+/* 면책 — 광고규정 대응. 눈에 덜 띄되 반드시 있어야 한다 */
+.hug-article [data-box="disclaimer"] {
+	background: transparent;
+	border: 0;
+	border-top: 1px solid var(--color-slate-200);
+	border-radius: 0;
+	padding: 18px 0 0;
+	margin-top: 44px;
+	font-size: 13px;
+	line-height: 1.7;
+	color: var(--color-slate-500);
+}
+.hug-article [data-box="disclaimer"]::before {
+	content: none;
+}

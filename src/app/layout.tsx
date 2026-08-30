@@ -8,6 +8,7 @@ import { JsonLd } from "@/components/JsonLd";
 import { Header } from "@/components/layout/Header";
 import { FitToViewport } from "@/components/shared/FitToViewport";
 import { FullPageScroll } from "@/components/shared/FullPageScroll";
+import { HomeOnly } from "@/components/shared/HomeOnly";
 import { QuickRail } from "@/components/shared/QuickRail";
 import { ScrollCue } from "@/components/shared/ScrollCue";
 import { siteConfig } from "@/config/site";
@@ -62,9 +63,15 @@ const RootLayout = ({ children }: { children: ReactNode }) => (
 			<JsonLd data={organizationSchema()} />
 			<JsonLd data={websiteSchema()} />
 			<Header />
-			<FullPageScroll />
-			<FitToViewport />
-			<ScrollCue />
+			{/*
+			 * ⚠️ 이 셋은 홈 전용이다. `main > section` 을 잡아 네이티브 스크롤을 가로채므로
+			 *    칼럼처럼 읽는 화면에 걸리면 글을 읽는 중에 화면이 튄다.
+			 */}
+			<HomeOnly>
+				<FullPageScroll />
+				<FitToViewport />
+				<ScrollCue />
+			</HomeOnly>
 			<QuickRail />
 			<main className="flex-1">{children}</main>
 			<Analytics />
