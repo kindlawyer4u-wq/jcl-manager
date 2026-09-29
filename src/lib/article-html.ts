@@ -13,11 +13,29 @@ import sanitizeHtml from "sanitize-html";
  *
  * ── 무엇을 남기고 무엇을 버리나 ──────────────────────────────────────────
  * ★ 버린다  `style` 전부. 색·크기·굵기·정렬이 글마다 달라지면 조판이 아니다.
+ *           (예외: 이미지의 크기·정렬·배치 — 아래 IMG_STYLES)
  * ★ 남긴다  구조(제목·문단·목록·표·인용·이미지)와 **의미 마커 `data-box`**.
  *
  * ⚠️ `class` 는 통과시키지 않는다. 통과시키면 글쓴이가 사이트의 내부 클래스에 기대게 되고,
  *    CSS 를 고칠 때 글이 깨진다. 의미는 정해진 다섯 개의 `data-box` 로만 받는다.
  */
+
+/**
+ * ★ **이미지만** 예외로 style 을 받는다 — 크기 · 정렬 · 나란히 배치 (2026-09-29).
+ *   어드민 에디터의 이미지 메뉴(아임웹과 같은 기능)가 `<img style>` 에 담는 값이다
+ *   (jcl-admin src/components/editor/image-style.ts). 글자색·글꼴처럼 조판을 흔드는 것은
+ *   여전히 버린다 — 여기 목록에 있는 여섯 가지 말고는 이미지에도 남지 않는다.
+ */
+const IMG_STYLES: Record<string, RegExp[]> = {
+	width: [/^\d+(\.\d+)?(px|%)$/],
+	display: [/^(block|inline-block)$/],
+	"vertical-align": [/^(top|middle|bottom)$/],
+	margin: [/^[-\d\s.px%auto]+$/],
+	"margin-top": [/^-?\d+(\.\d+)?(px|%)$/, /^auto$/],
+	"margin-bottom": [/^-?\d+(\.\d+)?(px|%)$/, /^auto$/],
+	"margin-left": [/^-?\d+(\.\d+)?(px|%)$/, /^0$/, /^auto$/],
+	"margin-right": [/^-?\d+(\.\d+)?(px|%)$/, /^0$/, /^auto$/],
+};
 
 /** 정해진 다섯 개만. 값을 열어 두면 곧 아무 문자열이나 들어온다 */
 const BOXES = ["point", "info", "warn", "sum", "disclaimer"];
@@ -62,10 +80,12 @@ export function sanitizeArticleHtml(dirty: string): string {
 			// ★ style 이 없다. 이것이 보존형과의 유일하고 결정적인 차이다
 			"*": ["data-box"],
 			a: ["href", "target", "rel", "title"],
-			img: ["src", "alt", "width", "height", "loading"],
+			img: ["src", "alt", "width", "height", "loading", "style"],
 			th: ["colspan", "rowspan", "scope"],
 			td: ["colspan", "rowspan"],
 		},
+		// style 은 img 에만 허용했고(위), 그 안에서도 이 목록만 남는다
+		allowedStyles: { img: IMG_STYLES },
 		allowedSchemes: ["http", "https", "mailto", "tel"],
 		allowedSchemesByTag: { img: ["https"] },
 		// 모르는 태그는 껍데기만 벗기고 내용은 살린다. 글이 사라지는 것이 더 나쁘다

@@ -37,13 +37,37 @@ const securityHeaders = [
 	},
 ];
 
+/*
+ * 초안 미리보기(/preview/column/…)는 **어드민 에디터가 iframe 으로 띄운다.** X-Frame-Options: SAMEORIGIN 은
+ * 다른 오리진(어드민)을 허용할 수 없어서, 이 경로만 그 헤더를 빼고 CSP frame-ancestors 로 어드민 주소만 연다.
+ * ⚠️ 와일드카드를 쓰지 않는다. 열거한 어드민 오리진만 프레임할 수 있다.
+ */
+const ADMIN_ORIGINS = [
+	"https://admin.jwlawyer4u.co.kr",
+	"https://jcl-admin.vercel.app",
+	...(process.env.ADMIN_ORIGIN?.trim() ? [process.env.ADMIN_ORIGIN.trim()] : []),
+];
+const previewHeaders = [
+	...securityHeaders.filter(
+		(h) => h.key !== "X-Frame-Options" && h.key !== "Content-Security-Policy",
+	),
+	{
+		key: "Content-Security-Policy",
+		value: `${securityHeaders.find((h) => h.key === "Content-Security-Policy")?.value}; frame-ancestors 'self' ${ADMIN_ORIGINS.join(" ")}`,
+	},
+];
+
 const nextConfig: NextConfig = {
 	// MDX(.md/.mdx)를 페이지/모듈로 처리 — 콘텐츠는 src/content/**/*.mdx
 	pageExtensions: ["js", "jsx", "ts", "tsx", "md", "mdx"],
 
 	async headers() {
 		if (process.env.NODE_ENV !== "production") return [];
-		return [{ source: "/(.*)", headers: securityHeaders }];
+		return [
+			// 초안 미리보기만 따로 — 아래 주석
+			{ source: "/((?!preview/).*)", headers: securityHeaders },
+			{ source: "/preview/:path*", headers: previewHeaders },
+		];
 	},
 
 	images: {

@@ -706,3 +706,21 @@
 .hug-article [data-box="disclaimer"]::before {
 	content: none;
 }
+
+/*
+ * ── 이미지 크기·정렬 (어드민 이미지 메뉴) ─────────────────────────────────
+ * 이미지에 붙은 style(width · display · margin)이 위 기본값을 덮는다 — 인라인이라 자연히 이긴다.
+ * ★ 휴대폰에서는 줄여 둔 **한 장짜리** 이미지를 화면 폭에 맞춘다. PC 본문(720px) 기준 50% 가
+ *   휴대폰에서는 너무 작아 판결문 글자를 읽을 수 없다. 나란히 놓은 이미지(inline-block)는
+ *   휴대폰에서도 나란히 선다.
+ */
+.hug-article img[style*="inline-block"] {
+	border-radius: 10px;
+}
+@media (max-width: 768px) {
+	.hug-article img[style*="display:block"],
+	.hug-article img[style*="display: block"] {
+		/* biome-ignore lint/complexity/noImportantStyles: 이미지 인라인 style 의 width 를 휴대폰에서 덮으려면 필요하다 */
+		width: auto !important;
+	}
+}

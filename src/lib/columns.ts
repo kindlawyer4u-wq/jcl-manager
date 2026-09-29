@@ -1,4 +1,5 @@
 import "server-only";
+import { createClient } from "@supabase/supabase-js";
 import { db } from "@/lib/supabase";
 
 /**
@@ -159,4 +160,52 @@ export async function relatedColumns(slug: string, categorySlug: string, limit =
 export async function homeColumns(limit = 4) {
 	const { rows } = await listColumns({ page: 1 });
 	return rows.slice(0, limit);
+}
+
+/**
+ * 초안까지 읽는다 — **어드민 미리보기(/preview/column/…) 전용.**
+ *
+ * ⚠️ service_role 키를 쓴다(RLS 가 초안을 막으므로). 공개 페이지에서 부르면 초안이 새어 나간다.
+ *    호출부가 PREVIEW_SECRET 토큰을 먼저 확인해야 한다. 키가 없으면 null — 미리보기만 꺼진다.
+ */
+export async function getDraftColumn(slug: string): Promise<ColumnDetail | null> {
+	const url = process.env.SUPABASE_URL;
+	const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
+	const id = await siteId();
+	if (!url || !key || !id) return null;
+	const sb = createClient(url, key, { auth: { persistSession: false } });
+	const { data } = await sb
+		.from("columns")
+		.select(`${CARD},body_html`)
+		.eq("site_id", id)
+		.eq("slug", slug)
+		.maybeSingle();
+	if (!data) return null;
+	const r = data as Row;
+	return { ...toCard(r), bodyHtml: r.body_html ?? "" };
+}
+
+/**
+ * 사이트맵용 — 발행된 글 **전부**의 주소와 발행일.
+ * ⚠️ `listColumns` 는 한 페이지(9건)만 준다. 사이트맵이 그걸 쓰던 때는 10번째 글부터 빠졌다.
+ * Supabase 는 한 번에 최대 1,000행이라 1,000건씩 끊어 받는다.
+ */
+export async function allColumnSlugs(): Promise<{ slug: string; publishedAt: string | null }[]> {
+	const sb = db();
+	const id = await siteId();
+	if (!sb || !id) return [];
+	const out: { slug: string; publishedAt: string | null }[] = [];
+	for (let from = 0; ; from += 1000) {
+		const { data } = await sb
+			.from("columns")
+			.select("slug,published_at")
+			.eq("site_id", id)
+			.eq("is_published", true)
+			.order("published_at", { ascending: false })
+			.range(from, from + 999);
+		const rows = (data ?? []) as { slug: string; published_at: string | null }[];
+		out.push(...rows.map((r) => ({ slug: r.slug, publishedAt: r.published_at })));
+		if (rows.length < 1000) break;
+	}
+	return out;
 }
