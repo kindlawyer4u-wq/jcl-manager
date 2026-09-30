@@ -9,6 +9,8 @@ import type { ColumnCard as Card } from "@/lib/columns";
  *   목록은 **읽을 글을 고르는 곳**이라 요약·날짜가 보여야 한다. 부동산 사이트 목록과 같은 조판이다:
  *   16:10 이미지 → 분류·날짜 한 줄 → 제목 3줄 → 요약 2줄. 모서리 없이 괘선 하나로 나눈다.
  * ★ 제목·요약을 줄 수로 잘라 같은 줄의 카드 높이를 맞춘다.
+ * ★ 잘릴 때 **아래를 남긴다**(object-bottom). 대표 이미지는 오른쪽 아래에 JCL 로고가 박힌 형식인데,
+ *   4:3 이미지가 16:10 칸에서 가운데 기준으로 잘리면 로고가 반쯤 잘려 나갔다(실측 2026-09-30).
  * ★ 대표 이미지가 없는 글은 남색 판 위에 로고를 깐다 — 빈 칸이면 카드 높이가 어긋나 보인다.
  * ⚠️ 안쪽은 전부 `span` 이다. `<a>` 안에 `h3`·`p` 를 넣으면 하이드레이션 경고가 난다.
  */
@@ -25,7 +27,7 @@ export function ColumnListCard({ item }: { item: Card }) {
 						alt=""
 						fill
 						sizes="(min-width: 1024px) 360px, (min-width: 640px) 50vw, 100vw"
-						className="object-cover transition-transform duration-500 group-hover:scale-[1.03]"
+						className="object-cover object-bottom transition-transform duration-500 group-hover:scale-[1.03]"
 					/>
 				) : (
 					<span aria-hidden className="absolute inset-0 flex items-center justify-center">

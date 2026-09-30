@@ -137,7 +137,14 @@ export default async function ColumnDetail({ params }: { params: Promise<{ slug:
 
 						{c.thumb && (
 							<div className="relative mt-7 aspect-[16/9] overflow-hidden rounded-xl bg-slate-100">
-								<Image src={c.thumb} alt="" fill sizes="720px" className="object-cover" priority />
+								<Image
+									src={c.thumb}
+									alt=""
+									fill
+									sizes="720px"
+									className="object-cover object-bottom"
+									priority
+								/>
 							</div>
 						)}
 

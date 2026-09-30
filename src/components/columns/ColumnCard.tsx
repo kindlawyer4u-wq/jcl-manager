@@ -24,7 +24,7 @@ export function ColumnCard({ item, date = true }: { item: Card; date?: boolean }
 						alt=""
 						fill
 						sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 280px"
-						className="object-cover transition duration-300 group-hover:scale-105"
+						className="object-cover object-bottom transition duration-300 group-hover:scale-105"
 					/>
 				) : (
 					<div
