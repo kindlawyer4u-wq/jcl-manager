@@ -23,12 +23,9 @@ import { getColumn, relatedColumns } from "@/lib/columns";
  */
 
 /*
- * ★ 글 화면은 한 번 그리면 5분 동안 그대로 내준다(ISR). 전에는 열 때마다 서버가 DB(서울)를
- *   미국에서 다녀와 1.5초 넘게 걸렸다. 빈 목록 = 빌드 때 굽지 않고 첫 방문 때 굽는다.
+ * ⚠️ 이 화면에 ISR(revalidate + generateStaticParams)을 걸지 않는다. 2026-09-30 걸었더니 로컬은
+ *    멀쩡한데 **운영(Vercel)에서만 한글 slug 글이 500** 이 났다. 속도는 조회 캐시(lib/columns.ts)로 번다.
  */
-export const revalidate = 300;
-export const generateStaticParams = async () => [];
-
 const site = (p: string) => `${siteConfig.url.replace(/\/$/, "")}${p}`;
 
 export async function generateMetadata({
