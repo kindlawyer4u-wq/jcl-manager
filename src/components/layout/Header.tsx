@@ -73,7 +73,7 @@ export const Header = () => {
 						<a
 							key={item.href}
 							href={to(item.href)}
-							className="w-[clamp(5rem,6.5vw,8rem)] text-center font-bold text-[clamp(15px,1.05vw,18px)] text-current/90 transition-colors hover:text-current"
+							className="min-w-[clamp(5rem,6.5vw,8rem)] whitespace-nowrap text-center font-bold text-[clamp(15px,1.05vw,18px)] text-current/90 transition-colors hover:text-current"
 						>
 							{item.label}
 						</a>
