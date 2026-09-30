@@ -1,11 +1,10 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ColumnCard } from "@/components/columns/ColumnCard";
+import { ColumnListCard } from "@/components/columns/ColumnListCard";
 import { ContactCta } from "@/components/sections/ContactCta";
 import { Container } from "@/components/ui/container";
 import { Heading, Text } from "@/components/ui/text";
 import { listCategories, listColumns, PER_PAGE } from "@/lib/columns";
-import { cn } from "@/lib/utils";
 
 /**
  * 칼럼 목록.
@@ -15,8 +14,8 @@ import { cn } from "@/lib/utils";
  * 보내고, 그 글이 쌓아 주는 검색 신뢰도 그쪽에 남는다. 칼럼을 이 사이트 안으로 들인다.
  *
  * ── 정한 것 ──────────────────────────────────────────────────────────────
- * ★ 카드는 홈 섹션의 것을 그대로 쓴다. 목록에 새 디자인을 만들지 않는다.
- * ★ 분류 칩은 **이미 이 사이트의 분류**다(민간임대·건설사 부도·지급 거절·강제집행).
+ * ★ 카드는 목록 전용(ColumnListCard) — 부동산 사이트 목록과 같은 조판(2026-09-30).
+ * ★ 분류 필터는 **이미 이 사이트의 분류**다(민간임대·건설사 부도·지급 거절·강제집행).
  *   새로 만드는 것이 아니라 있는 것을 쓰는 것이고, 옆의 숫자가 어느 쪽 글이 부족한지 알려 준다.
  * ★ 필터와 페이지를 **주소에 둔다.** 상태로만 두면 뒤로가기가 깨지고 링크를 못 준다.
  * ⚠️ 무한 스크롤을 쓰지 않는다. 검색엔진이 2 페이지를 못 본다.
@@ -58,34 +57,50 @@ export default async function ColumnsPage({
 
 	return (
 		<>
-			<section className="bg-surface pt-[clamp(6.5rem,12vh,9rem)] pb-14">
+			{/*
+			 * ★ 부동산 사이트 칼럼 목록과 같은 구조(2026-09-30): 어두운 머리 → 괘선 필터 → 카드 3열 → 페이지.
+			 *   가운데 정렬 제목 + 알약 필터였던 것을 왼쪽 정렬·빵부스러기로 바꿨다 — 「어디에 와 있는지」가
+			 *   먼저 보이고, 헤더는 어두운 머리 위에서 흰 글씨로 바뀐다(Header 가 배경 밝기를 잰다).
+			 */}
+			<header className="bg-dark pt-[clamp(8rem,16vh,11.5rem)] pb-[clamp(3.5rem,8vh,5.5rem)] text-white">
 				<Container>
-					<div className="text-center">
-						<Heading level={1} size="h2" className="text-ink">
-							HUG 보증보험 이행청구 법률 정보
-						</Heading>
-						<Text size="body-lg" className="mx-auto mt-5 max-w-[820px] text-muted-foreground">
-							전문 변호사가 직접 작성한 칼럼입니다. 보증보험 이행청구 전 꼭 읽어보세요.
-						</Text>
-					</div>
+					<nav aria-label="현재 위치" className="mb-7 text-[13px] text-on-dark-muted">
+						<Link href="/" className="hover:text-white">
+							홈
+						</Link>
+						<span className="mx-2">·</span>
+						<span className="text-white">칼럼</span>
+					</nav>
+					<p className="font-semibold text-[15px] text-brand-300 tracking-wide">법률 칼럼</p>
+					<Heading level={1} size="h1" className="mt-3 break-keep text-white">
+						HUG 보증보험 이행청구 법률 정보
+					</Heading>
+					<Text size="body-lg" className="mt-6 max-w-[640px] break-keep text-on-dark">
+						전문 변호사가 직접 작성한 칼럼입니다. 보증보험 이행청구 전 꼭 읽어보세요.
+					</Text>
+				</Container>
+			</header>
 
-					{categories.length > 0 && (
-						<nav aria-label="분류" className="mt-9 flex flex-wrap justify-center gap-2">
-							<Chip href={href()} on={!tag} label="전체" count={all} />
-							{categories.map((c) => (
-								<Chip
-									key={c.slug}
-									href={href(c.slug)}
-									on={tag === c.slug}
-									label={c.ko}
-									count={c.count}
-								/>
-							))}
+			<section className="bg-white pt-12 pb-[clamp(4rem,10vh,7rem)] max-sm:pt-8">
+				<Container>
+					{/* 분류가 하나뿐이면 필터 줄을 그리지 않는다 — 「전체 · 칼럼」 은 같은 말을 두 번 한다 */}
+					{categories.length > 1 && (
+						<nav aria-label="분류" className="mb-10 border-line border-b pb-5">
+							<ul className="flex flex-wrap items-center gap-x-7 gap-y-3 max-sm:gap-x-5">
+								<li>
+									<Tab href={href()} on={!tag} label="전체" count={all} />
+								</li>
+								{categories.map((c) => (
+									<li key={c.slug}>
+										<Tab href={href(c.slug)} on={tag === c.slug} label={c.ko} count={c.count} />
+									</li>
+								))}
+							</ul>
 						</nav>
 					)}
 
 					{rows.length === 0 ? (
-						<div className="mt-12 rounded-lg border border-slate-200 border-dashed bg-white/60 px-6 py-16 text-center">
+						<div className="border border-line border-dashed px-6 py-16 text-center">
 							<p className="font-bold text-body-lg text-ink">
 								{tag ? "이 분류에는 아직 글이 없습니다" : "칼럼을 준비하고 있습니다"}
 							</p>
@@ -102,31 +117,47 @@ export default async function ColumnsPage({
 						</div>
 					) : (
 						<>
-							<div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+							<ul className="grid grid-cols-3 gap-6 max-sm:grid-cols-1 max-lg:grid-cols-2">
 								{rows.map((c) => (
-									<ColumnCard key={c.slug} item={c} />
+									<li key={c.slug}>
+										<ColumnListCard item={c} />
+									</li>
 								))}
-							</div>
+							</ul>
 
-							{pages > 1 && (
-								<nav aria-label="페이지" className="mt-12 flex justify-center gap-2">
+							{/* 한 페이지뿐이어도 그린다 — 목록의 끝이라는 것 자체가 정보다 */}
+							<nav aria-label="페이지 목록" className="mt-14 flex justify-center">
+								<ul className="flex items-center gap-1">
+									{page > 1 && (
+										<li>
+											<PageLink href={href(tag, page - 1)} label="이전 페이지">
+												‹
+											</PageLink>
+										</li>
+									)}
 									{Array.from({ length: pages }, (_, i) => i + 1).map((n) => (
-										<Link
-											key={n}
-											href={href(tag, n)}
-											aria-current={n === page ? "page" : undefined}
-											className={cn(
-												"min-w-10 rounded-md border px-3 py-2 text-center text-sm transition-colors",
-												n === page
-													? "border-brand bg-brand font-bold text-white"
-													: "border-slate-200 bg-white text-slate-600 hover:border-brand hover:text-brand",
+										<li key={n}>
+											{n === page ? (
+												<span
+													aria-current="page"
+													className="flex size-10 items-center justify-center border-brand border-b-2 font-bold text-brand tabular-nums"
+												>
+													{n}
+												</span>
+											) : (
+												<PageLink href={href(tag, n)}>{n}</PageLink>
 											)}
-										>
-											{n}
-										</Link>
+										</li>
 									))}
-								</nav>
-							)}
+									{page < pages && (
+										<li>
+											<PageLink href={href(tag, page + 1)} label="다음 페이지">
+												›
+											</PageLink>
+										</li>
+									)}
+								</ul>
+							</nav>
 						</>
 					)}
 				</Container>
@@ -138,7 +169,8 @@ export default async function ColumnsPage({
 	);
 }
 
-function Chip({
+/** 분류 하나 — 알약 대신 밑줄. 현재 분류는 링크가 아니다(눌러도 제자리인 링크는 거짓말이다) */
+function Tab({
 	href,
 	on,
 	label,
@@ -149,18 +181,44 @@ function Chip({
 	label: string;
 	count: number;
 }) {
+	const num = <span className="ml-1.5 text-[13px] text-slate-500 tabular-nums">{count}</span>;
+	if (on)
+		return (
+			<span
+				aria-current="true"
+				className="border-brand border-b-2 pb-1.5 font-bold text-[17px] text-ink max-sm:text-[16px]"
+			>
+				{label}
+				{num}
+			</span>
+		);
 	return (
 		<Link
 			href={href}
-			className={cn(
-				"rounded-full border px-4 py-1.5 text-sm transition-colors",
-				on
-					? "border-brand bg-brand font-bold text-white"
-					: "border-slate-200 bg-white text-slate-600 hover:border-brand hover:text-brand",
-			)}
+			className="border-transparent border-b-2 pb-1.5 text-[17px] text-slate-600 transition-colors hover:text-ink max-sm:text-[16px]"
 		>
 			{label}
-			<span className={cn("ml-1.5 text-xs", on ? "text-white/70" : "text-slate-400")}>{count}</span>
+			{num}
+		</Link>
+	);
+}
+
+function PageLink({
+	href,
+	label,
+	children,
+}: {
+	href: string;
+	label?: string;
+	children: React.ReactNode;
+}) {
+	return (
+		<Link
+			href={href}
+			aria-label={label}
+			className="flex size-10 items-center justify-center text-slate-600 tabular-nums transition-colors hover:text-ink"
+		>
+			{children}
 		</Link>
 	);
 }

@@ -60,7 +60,8 @@ export const siteConfig = {
 		{ label: "핵심 요건", href: "#requirements" },
 		{ label: "진행 절차", href: "#process" },
 		{ label: "전문 변호사", href: "#team" },
-		{ label: "칼럼", href: "#columns" },
+		// 칼럼만 섹션이 아니라 목록 페이지로 간다 — 홈 섹션에는 네 건뿐이다
+		{ label: "칼럼", href: "/columns" },
 	],
 	primaryCta: { label: "전화 상담", href: "#contact" },
 	secondaryCta: { label: "카카오톡 상담", href: "#contact" },

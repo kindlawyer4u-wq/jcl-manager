@@ -1,6 +1,7 @@
 "use client";
 
 import { Menu, X } from "lucide-react";
+import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Logo } from "@/components/brand/logo";
 import { siteConfig } from "@/config/site";
@@ -16,6 +17,12 @@ const luminance = (color: string) => {
 
 export const Header = () => {
 	const [open, setOpen] = useState(false);
+	/*
+	 * ★ 섹션 앵커(#problem 등)는 홈에서만 통한다. 칼럼 화면에서 누르면 아무 일도 없었다 —
+	 *   홈 밖에서는 `/#problem` 으로 바꿔 홈의 그 섹션으로 보낸다.
+	 */
+	const home = usePathname() === "/";
+	const to = (href: string) => (!home && href.startsWith("#") ? `/${href}` : href);
 	// 헤더 뒤 섹션이 어두우면 흰 글자, 밝으면 검정 글자 (헤더 자체는 항상 투명)
 	const [dark, setDark] = useState(true);
 
@@ -57,7 +64,7 @@ export const Header = () => {
 			)}
 		>
 			<div className="flex h-16 items-center justify-between px-[clamp(1rem,2.5vw,2.5rem)] md:h-[88px]">
-				<a href="#top" className="shrink-0" aria-label={siteConfig.name}>
+				<a href={home ? "#top" : "/"} className="shrink-0" aria-label={siteConfig.name}>
 					<Logo dark={dark} />
 				</a>
 
@@ -65,7 +72,7 @@ export const Header = () => {
 					{siteConfig.nav.map((item) => (
 						<a
 							key={item.href}
-							href={item.href}
+							href={to(item.href)}
 							className="w-[clamp(5rem,6.5vw,8rem)] text-center font-bold text-[clamp(15px,1.05vw,18px)] text-current/90 transition-colors hover:text-current"
 						>
 							{item.label}
@@ -90,7 +97,7 @@ export const Header = () => {
 						{siteConfig.nav.map((item) => (
 							<a
 								key={item.href}
-								href={item.href}
+								href={to(item.href)}
 								onClick={() => setOpen(false)}
 								className="rounded-lg px-2 py-3 font-bold text-body hover:bg-white/5"
 							>
