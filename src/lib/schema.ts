@@ -15,6 +15,8 @@ export const organizationSchema = () => ({
 	name: siteConfig.name,
 	alternateName: siteConfig.nameEn,
 	url: siteConfig.url,
+	// 검색 결과·지식 패널의 로고. 파비콘(src/app/icon.png)과 같은 JCL 마크다
+	logo: `${siteConfig.url}/icon.png`,
 	description: siteConfig.description,
 	// placeholder 전화번호는 노출하지 않는다 (실제 번호 입력 시 자동 포함)
 	...((siteConfig.contact.tel as string) !== DUMMY_TEL && { telephone: siteConfig.contact.tel }),

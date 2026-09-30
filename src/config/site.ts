@@ -16,8 +16,12 @@ export const siteConfig = {
 	 * ⚠️ 글쓴이가 본문에 안 넣어도 화면이 붙인다 - 규정 준수를 사람의 기억에 맡기지 않는다.
 	 */
 	adResponsibleLawyer: "정종욱",
-	// TODO(client): 실제 배포 도메인으로 교체
-	url: "https://jclpartners.co.kr",
+	/*
+	 * 실제 도메인. canonical·og:url·사이트맵·robots·JSON-LD 가 전부 이 값을 쓴다.
+	 * ⚠️ 2026-09-30 까지 자리표시값(jclpartners.co.kr — 접속도 안 되는 도메인)이 남아 있어
+	 *    모든 페이지가 「원본은 저쪽」 이라고 검색엔진에 말하고 있었다.
+	 */
+	url: "https://www.jcl-hug.co.kr",
 	title: {
 		default: "제이씨엘파트너스 — HUG 보증보험 이행청구 부동산 변호사",
 		template: "%s | 제이씨엘파트너스",
