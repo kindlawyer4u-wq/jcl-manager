@@ -49,8 +49,8 @@ export const metadata: Metadata = {
 	alternates: { canonical: siteConfig.url },
 	// TODO(client): 구글 서치콘솔 / 네이버 서치어드바이저 소유확인 코드로 교체
 	verification: {
-		google: "TODO-google-search-console-verification",
-		other: { "naver-site-verification": "TODO-naver-search-advisor-verification" },
+		google: "UgpkFr17AWVuH0QdVvQlT-c0egb2p6dHSB91i12ZOEg",
+		other: { "naver-site-verification": "cb4b2bb198486ab48d0dec66d356b6d22c8aa237" },
 	},
 };
 
