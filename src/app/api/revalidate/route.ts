@@ -1,5 +1,5 @@
 import { timingSafeEqual } from "node:crypto";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import type { NextRequest } from "next/server";
 
 /**
@@ -28,5 +28,7 @@ export async function POST(req: NextRequest) {
 		paths.push(`/columns/${body.slug}`);
 	}
 	for (const p of paths) revalidatePath(p);
+	// 목록·글 조회 캐시(lib/columns.ts)도 비운다 — 경로만 비우면 캐시된 조회값으로 다시 그린다
+	revalidateTag("columns", "max");
 	return Response.json({ ok: true, revalidated: paths });
 }

@@ -1,5 +1,6 @@
 import "server-only";
 import { createClient } from "@supabase/supabase-js";
+import { unstable_cache } from "next/cache";
 import { db, SUPABASE_URL } from "@/lib/supabase";
 
 /**
@@ -60,17 +61,30 @@ const toCard = (r: Row): ColumnCard => {
 };
 
 /** 이 사이트의 id. 한 번 찾아 두고 모든 조회가 같은 값을 쓴다 */
-async function siteId(): Promise<string | null> {
+async function findSiteId(): Promise<string | null> {
 	const sb = db();
 	if (!sb) return null;
 	const { data } = await sb.from("sites").select("id").eq("key", SITE_KEY).maybeSingle();
 	return (data?.id as string) ?? null;
 }
 
+/*
+ * ── 캐시 (2026-09-30) ─────────────────────────────────────────────────────
+ * 칼럼 화면이 1.5~2초 걸렸다(실측 TTFB). 목록은 주소의 ?page=·?tag= 때문에 매번 서버에서 그리고,
+ * 그때마다 DB 를 **네 번 왕복**했다(사이트 id ×2 · 목록 · 분류). 함수가 미국 동부(iad1)에서 돌고
+ * DB 는 서울이라 한 번에 수백 ms 다.
+ * ★ 조회 결과를 5분 캐시한다(`columns` 태그). 발행 웹훅(/api/revalidate)이 태그를 비우므로
+ *   환경변수가 있으면 즉시, 없으면 5분 안에 새 글이 보인다 — 홈 ISR 과 같은 주기다.
+ * ★ 사이트 id 는 바뀌지 않는 값이라 하루 캐시한다.
+ */
+const siteId = unstable_cache(findSiteId, ["hug-site-id"], { revalidate: 86400 });
+const cached = <A extends unknown[], R>(fn: (...a: A) => Promise<R>, key: string) =>
+	unstable_cache(fn, [key], { revalidate: 300, tags: ["columns"] });
+
 /** 한 페이지에 몇 장. 카드가 한 줄 3장이라 3의 배수로 둔다 */
 export const PER_PAGE = 9;
 
-export async function listColumns(opts: { tag?: string; page?: number } = {}) {
+async function listColumnsRaw(opts: { tag?: string; page?: number } = {}) {
 	const sb = db();
 	const id = await siteId();
 	if (!sb || !id) return { rows: [] as ColumnCard[], total: 0 };
@@ -94,7 +108,7 @@ export async function listColumns(opts: { tag?: string; page?: number } = {}) {
 	return { rows: ((data ?? []) as Row[]).map(toCard), total: count ?? 0 };
 }
 
-export async function getColumn(slug: string): Promise<ColumnDetail | null> {
+async function getColumnRaw(slug: string): Promise<ColumnDetail | null> {
 	const sb = db();
 	const id = await siteId();
 	if (!sb || !id) return null;
@@ -113,7 +127,7 @@ export async function getColumn(slug: string): Promise<ColumnDetail | null> {
 }
 
 /** 분류 칩. 글이 한 건도 없는 분류는 보여 주지 않는다 - 눌러 봐야 빈 화면이다 */
-export async function listCategories(): Promise<Category[]> {
+async function listCategoriesRaw(): Promise<Category[]> {
 	const sb = db();
 	const id = await siteId();
 	if (!sb || !id) return [];
@@ -138,7 +152,7 @@ export async function listCategories(): Promise<Category[]> {
  * 같은 분류의 다른 글. 다 읽은 사람을 목록으로 되돌리지 않는다.
  * 두 건이면 충분하다 - 많이 깔면 고르다 지친다.
  */
-export async function relatedColumns(slug: string, categorySlug: string, limit = 2) {
+async function relatedColumnsRaw(slug: string, categorySlug: string, limit = 2) {
 	const sb = db();
 	const id = await siteId();
 	if (!sb || !id || !categorySlug) return [] as ColumnCard[];
@@ -209,3 +223,11 @@ export async function allColumnSlugs(): Promise<{ slug: string; publishedAt: str
 	}
 	return out;
 }
+
+export const listColumns = cached(listColumnsRaw, "listColumns");
+
+export const getColumn = cached(getColumnRaw, "getColumn");
+
+export const listCategories = cached(listCategoriesRaw, "listCategories");
+
+export const relatedColumns = cached(relatedColumnsRaw, "relatedColumns");
