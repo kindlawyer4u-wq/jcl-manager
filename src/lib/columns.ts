@@ -1,6 +1,6 @@
 import "server-only";
 import { createClient } from "@supabase/supabase-js";
-import { db } from "@/lib/supabase";
+import { db, SUPABASE_URL } from "@/lib/supabase";
 
 /**
  * 칼럼 조회 — HUG 사이트 것만.
@@ -169,7 +169,7 @@ export async function homeColumns(limit = 4) {
  *    호출부가 PREVIEW_SECRET 토큰을 먼저 확인해야 한다. 키가 없으면 null — 미리보기만 꺼진다.
  */
 export async function getDraftColumn(slug: string): Promise<ColumnDetail | null> {
-	const url = process.env.SUPABASE_URL;
+	const url = SUPABASE_URL;
 	const key = process.env.SUPABASE_SERVICE_ROLE_KEY;
 	const id = await siteId();
 	if (!url || !key || !id) return null;
