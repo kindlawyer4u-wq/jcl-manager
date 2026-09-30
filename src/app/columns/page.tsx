@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 import { ColumnListCard } from "@/components/columns/ColumnListCard";
 import { ContactCta } from "@/components/sections/ContactCta";
 import { Container } from "@/components/ui/container";
@@ -54,6 +55,21 @@ export default async function ColumnsPage({
 		return s ? `/columns?${s}` : "/columns";
 	};
 	const all = categories.reduce((n, c) => n + c.count, 0);
+
+	/*
+	 * ★ 없는 페이지(`?page=99`)는 마지막 페이지로 보낸다. 전에는 「칼럼을 준비하고 있습니다」 가 떠서
+	 *   글이 한 건도 없는 사이트처럼 보였다. 범위를 넘으면 DB 가 건수도 주지 않으므로 1쪽으로 센다.
+	 */
+	if (page > 1 && rows.length === 0) {
+		const first = await listColumns({ tag, page: 1 });
+		redirect(href(tag, Math.max(1, Math.ceil(first.total / PER_PAGE))));
+	}
+	/*
+	 * 번호는 현재 쪽 앞뒤로 둘씩(최대 다섯)만 보인다 — 글이 쌓여 스무 쪽이 되면 번호가 줄을 넘는다.
+	 * 처음·끝으로 가는 길은 «·» 가 맡는다.
+	 */
+	const from = Math.max(1, Math.min(page - 2, pages - 4));
+	const nums = Array.from({ length: Math.min(5, pages) }, (_, i) => from + i);
 
 	return (
 		<>
@@ -130,12 +146,19 @@ export default async function ColumnsPage({
 								<ul className="flex items-center gap-1">
 									{page > 1 && (
 										<li>
+											<PageLink href={href(tag, 1)} label="첫 페이지">
+												«
+											</PageLink>
+										</li>
+									)}
+									{page > 1 && (
+										<li>
 											<PageLink href={href(tag, page - 1)} label="이전 페이지">
 												‹
 											</PageLink>
 										</li>
 									)}
-									{Array.from({ length: pages }, (_, i) => i + 1).map((n) => (
+									{nums.map((n) => (
 										<li key={n}>
 											{n === page ? (
 												<span
@@ -153,6 +176,13 @@ export default async function ColumnsPage({
 										<li>
 											<PageLink href={href(tag, page + 1)} label="다음 페이지">
 												›
+											</PageLink>
+										</li>
+									)}
+									{page < pages && (
+										<li>
+											<PageLink href={href(tag, pages)} label="마지막 페이지">
+												»
 											</PageLink>
 										</li>
 									)}
