@@ -59,7 +59,8 @@ const gaId = process.env.NEXT_PUBLIC_GA_ID;
 
 const RootLayout = ({ children }: { children: ReactNode }) => (
 	<html lang="ko" className={`${pretendard.variable} h-full`} suppressHydrationWarning>
-		<body className="flex min-h-full flex-col" suppressHydrationWarning>
+		{/* <lg: 하단 고정 바(58px, QuickRail)가 페이지 마지막 줄을 덮지 않도록 그만큼 비운다 */}
+		<body className="flex min-h-full flex-col max-lg:pb-[58px]" suppressHydrationWarning>
 			<JsonLd data={organizationSchema()} />
 			<JsonLd data={websiteSchema()} />
 			<Header />
