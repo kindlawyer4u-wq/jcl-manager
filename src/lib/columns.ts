@@ -26,7 +26,7 @@ export type ColumnCard = {
 	publishedAt: string | null;
 };
 
-export type ColumnDetail = ColumnCard & { bodyHtml: string };
+export type ColumnDetail = ColumnCard & { bodyHtml: string; updatedAt: string | null };
 
 export type Category = { slug: string; ko: string; count: number };
 
@@ -39,6 +39,7 @@ type Row = {
 	thumb_path: string | null;
 	published_at: string | null;
 	body_html?: string | null;
+	updated_at?: string | null;
 	column_categories: { slug: string; ko: string } | { slug: string; ko: string }[] | null;
 };
 
@@ -115,7 +116,7 @@ async function getColumnRaw(slug: string): Promise<ColumnDetail | null> {
 
 	const { data } = await sb
 		.from("columns")
-		.select(`${CARD},body_html`)
+		.select(`${CARD},body_html,updated_at`)
 		.eq("site_id", id)
 		.eq("slug", slug)
 		.eq("is_published", true)
@@ -123,7 +124,7 @@ async function getColumnRaw(slug: string): Promise<ColumnDetail | null> {
 
 	if (!data) return null;
 	const r = data as Row;
-	return { ...toCard(r), bodyHtml: r.body_html ?? "" };
+	return { ...toCard(r), bodyHtml: r.body_html ?? "", updatedAt: r.updated_at ?? null };
 }
 
 /** 분류 칩. 글이 한 건도 없는 분류는 보여 주지 않는다 - 눌러 봐야 빈 화면이다 */
@@ -190,13 +191,13 @@ export async function getDraftColumn(slug: string): Promise<ColumnDetail | null>
 	const sb = createClient(url, key, { auth: { persistSession: false } });
 	const { data } = await sb
 		.from("columns")
-		.select(`${CARD},body_html`)
+		.select(`${CARD},body_html,updated_at`)
 		.eq("site_id", id)
 		.eq("slug", slug)
 		.maybeSingle();
 	if (!data) return null;
 	const r = data as Row;
-	return { ...toCard(r), bodyHtml: r.body_html ?? "" };
+	return { ...toCard(r), bodyHtml: r.body_html ?? "", updatedAt: r.updated_at ?? null };
 }
 
 /**

@@ -7,6 +7,7 @@ import { JsonLd } from "@/components/JsonLd";
 import { ContactCta } from "@/components/sections/ContactCta";
 import { Container } from "@/components/ui/container";
 import { siteConfig } from "@/config/site";
+import { extractFaq } from "@/lib/article-faq";
 import { sanitizeArticleHtml } from "@/lib/article-html";
 import { getColumn, relatedColumns } from "@/lib/columns";
 
@@ -87,6 +88,8 @@ export default async function ColumnDetail({ params }: { params: Promise<{ slug:
 	const items = toc(clean);
 	const body = items.length > 0 ? withIds(clean) : clean;
 	const related = await relatedColumns(c.slug, c.categorySlug);
+	// 본문의 「Q. / A.」 문단 → FAQPage. 없으면 싣지 않는다(lib/article-faq.ts)
+	const faq = extractFaq(clean);
 
 	return (
 		<>
@@ -97,12 +100,33 @@ export default async function ColumnDetail({ params }: { params: Promise<{ slug:
 					headline: c.title,
 					description: c.description,
 					datePublished: c.publishedAt ?? undefined,
+					dateModified: c.updatedAt ?? c.publishedAt ?? undefined,
 					mainEntityOfPage: site(`/columns/${c.slug}`),
-					author: { "@type": "Organization", name: siteConfig.name },
+					// ★ 저자는 법인이 아니라 글을 쓴 변호사다. 화면의 「날짜 · 정종욱」과 같은 사람 —
+					//   AI 답변엔진과 검색엔진은 개인 저자(자격 있는 사람)를 신뢰 신호로 읽는다
+					author: {
+						"@type": "Person",
+						name: siteConfig.adResponsibleLawyer,
+						jobTitle: "변호사",
+						worksFor: { "@type": "Organization", name: siteConfig.name },
+					},
 					publisher: { "@type": "Organization", name: siteConfig.name },
 					...(c.thumb ? { image: c.thumb } : {}),
 				}}
 			/>
+			{faq.length > 0 && (
+				<JsonLd
+					data={{
+						"@context": "https://schema.org",
+						"@type": "FAQPage",
+						mainEntity: faq.map((f) => ({
+							"@type": "Question",
+							name: f.q,
+							acceptedAnswer: { "@type": "Answer", text: f.a },
+						})),
+					}}
+				/>
+			)}
 
 			<article className="bg-surface pt-[clamp(6.5rem,12vh,9rem)] pb-16">
 				<Container>
@@ -139,7 +163,7 @@ export default async function ColumnDetail({ params }: { params: Promise<{ slug:
 							<div className="relative mt-7 aspect-[16/9] overflow-hidden rounded-xl bg-slate-100">
 								<Image
 									src={c.thumb}
-									alt=""
+									alt={c.title}
 									fill
 									sizes="720px"
 									className="object-cover object-bottom"
