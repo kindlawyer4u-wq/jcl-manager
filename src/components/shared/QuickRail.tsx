@@ -5,7 +5,7 @@ import { siteConfig } from "@/config/site";
 const [phoneArea, ...phoneRest] = siteConfig.contact.tel.split("-");
 
 const links = [
-	{ label: "카톡", href: siteConfig.contact.kakaoChannel, img: "/kakao.svg" },
+	{ label: "카톡", href: siteConfig.contact.kakaoChat, img: "/kakao.svg" },
 	{ label: "유튜브", href: siteConfig.contact.youtube, img: "/youtube.svg" },
 	{ label: "블로그", href: siteConfig.contact.blog, img: "/blog.svg" },
 ];
@@ -81,7 +81,7 @@ export const QuickRail = () => (
 				<span className="font-semibold text-mint-300">전화상담</span>
 			</a>
 			<a
-				href={siteConfig.contact.kakaoChannel}
+				href={siteConfig.contact.kakaoChat}
 				target="_blank"
 				rel="noopener noreferrer"
 				className={`${barCell} text-white/85 active:bg-white/10`}

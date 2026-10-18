@@ -15,8 +15,8 @@ const channels = [
 	},
 	{
 		label: "카카오톡 상담",
-		value: "채널 바로가기 →",
-		href: siteConfig.contact.kakaoChannel,
+		value: "1:1 채팅 바로가기 →",
+		href: siteConfig.contact.kakaoChat,
 		Icon: MessageCircle,
 		pill: "bg-highlight text-ink",
 	},

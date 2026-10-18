@@ -50,6 +50,8 @@ export const siteConfig = {
 		addressRegion: "서울특별시",
 		postalCode: "06160",
 		kakaoChannel: "https://pf.kakao.com/_jfgxfG",
+		/** 상담 버튼이 보내는 곳 — 채널 홈이 아니라 바로 1:1 채팅 창(2026-10-18 요청). 채널 홈은 sameAs 에만 쓴다 */
+		kakaoChat: "https://pf.kakao.com/_jfgxfG/chat",
 		naverBlog: "https://blog.naver.com/partners4u",
 		blog: "https://jclblog.com/",
 		youtube:
