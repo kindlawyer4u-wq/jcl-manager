@@ -11,6 +11,7 @@ import { HomeOnly } from "@/components/shared/HomeOnly";
 import { QuickRail } from "@/components/shared/QuickRail";
 import { ScrollCue } from "@/components/shared/ScrollCue";
 import { SiteAnalytics } from "@/components/shared/SiteAnalytics";
+import { VisitTracker } from "@/components/shared/Visit";
 import { siteConfig } from "@/config/site";
 import { organizationSchema, websiteSchema } from "@/lib/schema";
 import "./globals.css";
@@ -78,6 +79,8 @@ const RootLayout = ({ children }: { children: ReactNode }) => (
 			<Analytics />
 			<SpeedInsights />
 			<SiteAnalytics gaId={gaId} />
+			{/* 칼럼 조회 수집의 탭 첫 진입·직전 페이지 기록. 보내는 것은 칼럼 상세의 ViewBeacon */}
+			<VisitTracker />
 		</body>
 	</html>
 );
