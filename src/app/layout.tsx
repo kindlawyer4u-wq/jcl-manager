@@ -1,4 +1,3 @@
-import { GoogleAnalytics } from "@next/third-parties/google";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import type { Metadata } from "next";
@@ -11,6 +10,7 @@ import { FullPageScroll } from "@/components/shared/FullPageScroll";
 import { HomeOnly } from "@/components/shared/HomeOnly";
 import { QuickRail } from "@/components/shared/QuickRail";
 import { ScrollCue } from "@/components/shared/ScrollCue";
+import { SiteAnalytics } from "@/components/shared/SiteAnalytics";
 import { siteConfig } from "@/config/site";
 import { organizationSchema, websiteSchema } from "@/lib/schema";
 import "./globals.css";
@@ -54,8 +54,8 @@ export const metadata: Metadata = {
 	},
 };
 
-// GA4 측정 ID. NEXT_PUBLIC_GA_ID=G-XXXXXXXX 설정 시에만 로드.
-const gaId = process.env.NEXT_PUBLIC_GA_ID;
+// GA4 측정 ID(변호사님 계정 jclpartners · 속성 562149966). 측정 ID 는 공개값이라 코드에 둔다 — 환경변수로 덮을 수 있다
+const gaId = process.env.NEXT_PUBLIC_GA_ID || "G-NF7WKHYE0Y";
 
 const RootLayout = ({ children }: { children: ReactNode }) => (
 	<html lang="ko" className={`${pretendard.variable} h-full`} suppressHydrationWarning>
@@ -77,7 +77,7 @@ const RootLayout = ({ children }: { children: ReactNode }) => (
 			<main className="flex-1">{children}</main>
 			<Analytics />
 			<SpeedInsights />
-			{gaId ? <GoogleAnalytics gaId={gaId} /> : null}
+			<SiteAnalytics gaId={gaId} />
 		</body>
 	</html>
 );
