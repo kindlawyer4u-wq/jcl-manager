@@ -5,7 +5,6 @@ import { notFound } from "next/navigation";
 import { ColumnCard } from "@/components/columns/ColumnCard";
 import { JsonLd } from "@/components/JsonLd";
 import { ContactCta } from "@/components/sections/ContactCta";
-import { ViewBeacon } from "@/components/shared/Visit";
 import { Container } from "@/components/ui/container";
 import { siteConfig } from "@/config/site";
 import { extractFaq } from "@/lib/article-faq";
@@ -29,10 +28,6 @@ import { getColumn, relatedColumns } from "@/lib/columns";
  *    멀쩡한데 **운영(Vercel)에서만 한글 slug 글이 500** 이 났다. 속도는 조회 캐시(lib/columns.ts)로 번다.
  */
 const site = (p: string) => `${siteConfig.url.replace(/\/$/, "")}${p}`;
-
-/** 운영 배포에서만 조회를 센다. 미리보기·로컬에서 쓰면 확인하려고 연 조회가 실제 숫자에 섞인다 */
-const TRACK_VIEWS =
-	process.env.VERCEL_ENV === "production" || process.env.NEXT_PUBLIC_VIEWS_ALLOW_LOCAL === "1";
 
 export async function generateMetadata({
 	params,
@@ -98,7 +93,6 @@ export default async function ColumnDetail({ params }: { params: Promise<{ slug:
 
 	return (
 		<>
-			{TRACK_VIEWS && <ViewBeacon slug={c.slug} />}
 			<JsonLd
 				data={{
 					"@context": "https://schema.org",
