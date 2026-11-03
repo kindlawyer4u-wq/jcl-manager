@@ -1,3 +1,4 @@
+import { GoogleAnalytics } from "@next/third-parties/google";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import type { Metadata } from "next";
@@ -10,7 +11,6 @@ import { FullPageScroll } from "@/components/shared/FullPageScroll";
 import { HomeOnly } from "@/components/shared/HomeOnly";
 import { QuickRail } from "@/components/shared/QuickRail";
 import { ScrollCue } from "@/components/shared/ScrollCue";
-import { SiteAnalytics } from "@/components/shared/SiteAnalytics";
 import { VisitTracker } from "@/components/shared/Visit";
 import { siteConfig } from "@/config/site";
 import { organizationSchema, websiteSchema } from "@/lib/schema";
@@ -55,8 +55,9 @@ export const metadata: Metadata = {
 	},
 };
 
-// GA4 측정 ID(변호사님 계정 jclpartners · 속성 562149966). 측정 ID 는 공개값이라 코드에 둔다 — 환경변수로 덮을 수 있다
-const gaId = process.env.NEXT_PUBLIC_GA_ID || "G-NF7WKHYE0Y";
+// GA4 측정 ID. NEXT_PUBLIC_GA_ID=G-XXXXXXXX 설정 시에만 로드.
+// 2026-11-04 요청으로 HUG 는 GA4 를 쓰지 않는다(어드민 방문 현황도 뺐다)
+const gaId = process.env.NEXT_PUBLIC_GA_ID;
 
 const RootLayout = ({ children }: { children: ReactNode }) => (
 	<html lang="ko" className={`${pretendard.variable} h-full`} suppressHydrationWarning>
@@ -78,7 +79,7 @@ const RootLayout = ({ children }: { children: ReactNode }) => (
 			<main className="flex-1">{children}</main>
 			<Analytics />
 			<SpeedInsights />
-			<SiteAnalytics gaId={gaId} />
+			{gaId ? <GoogleAnalytics gaId={gaId} /> : null}
 			{/* 칼럼 조회 수집의 탭 첫 진입·직전 페이지 기록. 보내는 것은 칼럼 상세의 ViewBeacon */}
 			<VisitTracker />
 		</body>
