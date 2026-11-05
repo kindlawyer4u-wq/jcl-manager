@@ -73,6 +73,8 @@ export const siteConfig = {
 		{ label: "전문 변호사", href: "#team" },
 		// 칼럼만 섹션이 아니라 목록 페이지로 간다 — 홈 섹션에는 네 건뿐이다
 		{ label: "칼럼", href: "/columns" },
+		// 2026-11-05 요청 — 홈 하단 오시는 길 섹션
+		{ label: "오시는 길", href: "#location" },
 	],
 	primaryCta: { label: "전화 상담", href: "#contact" },
 	secondaryCta: { label: "카카오톡 상담", href: "#contact" },
