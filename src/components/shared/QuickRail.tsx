@@ -5,7 +5,7 @@ import { siteConfig } from "@/config/site";
 const [phoneArea, ...phoneRest] = siteConfig.contact.tel.split("-");
 
 const links = [
-	{ label: "카톡", href: siteConfig.contact.kakaoChat, img: "/kakao.svg" },
+	{ label: "카톡상담", href: siteConfig.contact.kakaoChat, img: "/kakao.svg" },
 	{ label: "유튜브", href: siteConfig.contact.youtube, img: "/youtube.svg" },
 	{ label: "블로그", href: siteConfig.contact.blog, img: "/blog.svg" },
 ];
