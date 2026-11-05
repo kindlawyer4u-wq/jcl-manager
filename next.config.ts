@@ -23,8 +23,9 @@ const securityHeaders = [
 		value: [
 			"default-src 'self'",
 			// 스크립트: self + GA + Vercel Analytics + 카카오맵 SDK
-			"script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://va.vercel-scripts.com https://t1.daumcdn.net https://dapi.kakao.com",
-			"style-src 'self' 'unsafe-inline'",
+			// + 오시는 길 카카오맵 퍼가기(roughmap) — 설치·지도 스크립트가 t1.kakaocdn.net 에서 온다
+			"script-src 'self' 'unsafe-inline' https://www.googletagmanager.com https://va.vercel-scripts.com https://t1.daumcdn.net https://dapi.kakao.com https://t1.kakaocdn.net",
+			"style-src 'self' 'unsafe-inline' https://t1.kakaocdn.net",
 			"img-src 'self' data: blob: https:",
 			"font-src 'self'",
 			// 연결: self + GA + Vercel Analytics + 카카오맵 API

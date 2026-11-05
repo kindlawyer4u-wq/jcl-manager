@@ -1,6 +1,7 @@
 import { Columns } from "@/components/sections/Columns";
 import { ContactCta } from "@/components/sections/ContactCta";
 import { Hero } from "@/components/sections/Hero";
+import { Location } from "@/components/sections/Location";
 import { Problem } from "@/components/sections/Problem";
 import { Process } from "@/components/sections/Process";
 import { Requirements } from "@/components/sections/Requirements";
@@ -26,6 +27,7 @@ export default function HomePage() {
 			<Process />
 			<Team />
 			<Columns />
+			<Location />
 			<ContactCta />
 		</>
 	);

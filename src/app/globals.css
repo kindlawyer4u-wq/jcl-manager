@@ -724,3 +724,12 @@
 		width: auto !important;
 	}
 }
+
+/*
+ * 카카오맵 퍼가기(components/shared/KakaoRoughmap.tsx) — 지도 아래 주소·전화 칸을 숨긴다.
+ * ⚠️ 그 칸의 전화번호는 카카오에 등록된 장소 번호라 사이트 대표번호와 다르다(jcl-criminal 과 같은 처리).
+ */
+.root_daum_roughmap .cont {
+	/* biome-ignore lint/complexity/noImportantStyles: 남의 스크립트가 그리는 DOM — 카카오 CSS 가 바뀌어도 틀린 번호가 다시 뜨지 않게 */
+	display: none !important;
+}

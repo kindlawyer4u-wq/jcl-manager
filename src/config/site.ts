@@ -58,6 +58,11 @@ export const siteConfig = {
 			"https://www.youtube.com/@%EC%A0%9C%EC%9D%B4%EC%94%A8%EC%97%98%ED%8C%8C%ED%8A%B8%EB%84%88%EC%8A%A4/videos",
 		naverPlace: "https://naver.me/xHghsf16",
 		mapUrl: "https://map.kakao.com/",
+		/* 오시는 길 섹션 — jcl-criminal 과 같은 사무소(교통편 · 카카오맵 장소 링크, 2026-11-05) */
+		transit: "지하철 2호선 선릉역",
+		transitDetail: "10번 출구 도보 약 3분",
+		/** [지도 바로가기] — 카카오맵 사무소 장소(주소 검색이 아니라 장소라 층까지 맞다) */
+		mapLink: "https://kko.to/zBDUrCHhTZ",
 	},
 	// 단일 랜딩 섹션 앵커 (design 기준)
 	nav: [
