@@ -51,12 +51,8 @@ export const QuickRail = () => (
 					<span className="font-medium text-[12px]">{l.label}</span>
 				</a>
 			))}
-			<a
-				href={siteConfig.contact.naverPlace}
-				target="_blank"
-				rel="noopener noreferrer"
-				className={cell}
-			>
+			{/* 2026-11-05 요청 — 네이버 플레이스 대신 홈 맨 아래 오시는 길 섹션으로. 칼럼 화면에서도 홈으로 데려간다 */}
+			<a href="/#location" className={cell}>
 				<MapPin className="size-6 text-mint-700" aria-hidden />
 				<span className="font-medium text-[12px]">오시는 길</span>
 			</a>
